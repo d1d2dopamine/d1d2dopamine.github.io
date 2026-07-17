@@ -32,6 +32,35 @@
     };
   };
 
+  const fetchLatestCommitTime = async (work) => {
+    if (work.lastCommitAt || !work.url) return;
+    try {
+      const repositoryUrl = new URL(work.url);
+      if (repositoryUrl.hostname !== 'github.com') return;
+      const [owner, repository] = repositoryUrl.pathname.split('/').filter(Boolean);
+      if (!owner || !repository) return;
+      const apiRoot = 'https:' + '//api.github.com';
+      const response = await fetch(
+        `${apiRoot}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/commits?per_page=1`,
+        {
+          cache: 'no-store',
+          headers: { Accept: 'application/vnd.github+json' }
+        }
+      );
+      if (!response.ok) return;
+      const commits = await response.json();
+      const commit = commits[0]?.commit;
+      work.lastCommitAt = commit?.committer?.date || commit?.author?.date || null;
+    } catch {
+      // The scheduled GitHub Action remains the primary source if the public API is unavailable.
+    }
+  };
+
+  const hydrateCommitTimes = async (data) => {
+    if (!Array.isArray(data.latestWorks)) return;
+    await Promise.allSettled(data.latestWorks.slice(0, 5).map(fetchLatestCommitTime));
+  };
+
   const renderSiteData = (data) => {
     const nowText = document.querySelector('[data-now-text]');
     const nowDate = document.querySelector('[data-now-date]');
@@ -63,8 +92,8 @@
         } else {
           commitTime.hidden = true;
         }
-        link.append(name, commitTime);
-        item.append(link);
+        link.append(name);
+        item.append(link, commitTime);
         feed.append(item);
       });
     }
@@ -81,7 +110,10 @@
       if (!response.ok) throw new Error(`site-data: ${response.status}`);
       return response.json();
     })
-    .then(renderSiteData)
+    .then(async (data) => {
+      await hydrateCommitTimes(data);
+      renderSiteData(data);
+    })
     .catch(() => {
       // Static HTML remains a complete fallback when opened locally or offline.
     });
