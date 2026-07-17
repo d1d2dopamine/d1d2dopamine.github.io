@@ -18,13 +18,16 @@
     const clock = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-GB', {
       hour: '2-digit',
       minute: '2-digit',
-      hourCycle: 'h23',
-      timeZone: 'Asia/Yekaterinburg'
+      hourCycle: 'h23'
     }).format(date);
     const full = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-GB', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-      timeZone: 'Asia/Yekaterinburg'
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+      timeZoneName: 'short'
     }).format(date);
     return {
       text: `${language === 'ru' ? 'в' : 'at'} ${clock}`,
