@@ -1,0 +1,21 @@
+{
+  "updated": "2026-07-17",
+  "now": {
+    "en": "Developing reusable validation tools and preparing the next stage of the Allostatic Sprint project.",
+    "ru": "Разрабатываю переиспользуемые инструменты валидации и готовлю следующий этап проекта Allostatic Sprint.",
+    "updated": "2026-07-17"
+  },
+  "latestWorks": [
+    {
+      "name": "The Allostatic Sprint Hypothesis",
+      "description": "Exploratory reanalysis of public ADHD-related datasets.",
+      "url": "https://github.com/d1d2dopamine/the-Allosteric-Sprint-hypothesis",
+      "updatedAt": "2026-07-17T00:00:00Z",
+      "lastCommitAt": null,
+      "release": {
+        "name": "v1.1.1",
+        "url": "https://github.com/d1d2dopamine/the-Allosteric-Sprint-hypothesis/releases/tag/v1.1.1"
+      }
+    }
+  ]
+}

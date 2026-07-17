@@ -1,0 +1,25 @@
+D1D2DOPAMINE personal site — dynamic static v11
+
+index.html                              English portfolio page
+ru.html                                 Russian portfolio page
+404.html                                Bilingual not-found page
+styles.css                              Responsive layout, cat rain, activity timeline, and interactions
+script.js                               JSON rendering, real commit-time formatting, and random meows
+data/site-data.json                     Now text and cached GitHub work/commit/release data
+scripts/update_site_data.py             GitHub API repositories, commits, and releases updater
+.github/workflows/refresh-site-data.yml Push/scheduled/manual/webhook refresh workflow
+assets/Meow.ogg                         Local cat recording by Dan Crosby
+assets/meow-pixabay-sound-garage.mp3    Local Cat Meow 8 FX recording
+assets/meow-senior-lukey1028.mp3        Local Senior Cat Meow recording
+assets/favicon.png                      64×64 cat favicon
+assets/apple-touch-icon.png             180×180 touch icon
+assets/og-image.png                     1200×630 social-link preview image
+assets/cats/*.png                       12 cleaned transparent cat cutouts
+robots.txt                              Search crawler rules
+sitemap.xml                             English/Russian sitemap
+site.webmanifest                        Install metadata and icons
+DYNAMIC_CONTENT.md                      Dynamic update and webhook instructions
+MEOW_CANDIDATES.md                      Installed and candidate sound sources
+THIRD_PARTY_NOTICES.md                  Audio attribution and license details
+.nojekyll                               Disables Jekyll processing on GitHub Pages
+README.md                               Preview and deployment instructions

@@ -1,0 +1,13 @@
+{
+  "name": "D1D2DOPAMINE",
+  "short_name": "D1D2",
+  "description": "Independent work in neuroscience, psychology, and open research.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#151515",
+  "theme_color": "#151515",
+  "icons": [
+    {"src": "assets/favicon.png", "sizes": "64x64", "type": "image/png"},
+    {"src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"}
+  ]
+}

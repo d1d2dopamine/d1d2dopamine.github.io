@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://d1d2dopamine.github.io/sitemap.xml
