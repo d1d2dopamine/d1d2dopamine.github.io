@@ -15,12 +15,20 @@
     if (!value) return null;
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return null;
-    const clock = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-GB', {
+    const locale = language === 'ru' ? 'ru-RU' : 'en-GB';
+    const clock = new Intl.DateTimeFormat(locale, {
       hour: '2-digit',
       minute: '2-digit',
       hourCycle: 'h23'
     }).format(date);
-    const full = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-GB', {
+    const shortDate = new Intl.DateTimeFormat(locale, {
+      day: 'numeric',
+      month: 'short'
+    }).format(date);
+    const zone = new Intl.DateTimeFormat(locale, {
+      timeZoneName: 'short'
+    }).formatToParts(date).find((part) => part.type === 'timeZoneName')?.value || '';
+    const full = new Intl.DateTimeFormat(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -30,13 +38,15 @@
       timeZoneName: 'short'
     }).format(date);
     return {
-      text: `${language === 'ru' ? 'в' : 'at'} ${clock}`,
+      text: language === 'ru'
+        ? `${shortDate}, в ${clock} ${zone}`.trim()
+        : `${shortDate}, ${clock} ${zone}`.trim(),
       full
     };
   };
 
   const fetchLatestCommitTime = async (work) => {
-    if (work.lastCommitAt || !work.url) return;
+    if (!work.url) return;
     try {
       const repositoryUrl = new URL(work.url);
       if (repositoryUrl.hostname !== 'github.com') return;
