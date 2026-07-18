@@ -78,7 +78,6 @@
     const nowText = document.querySelector('[data-now-text]');
     const nowDate = document.querySelector('[data-now-date]');
     const feed = document.querySelector('[data-latest-work]');
-    const releaseLink = document.querySelector('[data-current-release]');
 
     if (nowText && data.now?.[language]) nowText.textContent = data.now[language];
     if (nowDate && data.now?.updated) {
@@ -109,12 +108,6 @@
         item.append(link, commitTime);
         feed.append(item);
       });
-    }
-
-    const current = data.latestWorks?.find((work) => work.url?.includes('the-Allosteric-Sprint-hypothesis'));
-    if (releaseLink && current?.release?.url) {
-      releaseLink.href = current.release.url;
-      releaseLink.textContent = `${language === 'ru' ? 'Релиз' : 'Release'} ${current.release.name} ↗`;
     }
   };
 

@@ -4,7 +4,7 @@ The site remains static on GitHub Pages. Dynamic information is generated into `
 
 ## What updates automatically
 
-The workflow `.github/workflows/refresh-site-data.yml` runs on the first push to `main` and then every six hours. It reads public repositories, each repository’s latest commit time, and latest releases from the GitHub API, writes up to five recent works to `data/site-data.json`, and commits only when data changed. Commits that change only `data/site-data.json` are excluded from the push trigger, so the workflow cannot create an update loop.
+The workflow `.github/workflows/refresh-site-data.yml` runs on the first push to `main` and then every six hours. It reads public repositories and each repository’s latest commit time from the GitHub API, writes up to five recent works to `data/site-data.json`, and commits only when data changed. Commits that change only `data/site-data.json` are excluded from the push trigger, so the workflow cannot create an update loop.
 
 No GitHub token is shipped to the browser. The workflow uses the repository-scoped `GITHUB_TOKEN` supplied by GitHub Actions. Commit times are displayed in the fixed `Asia/Yekaterinburg` timezone so every visitor sees the same time.
 

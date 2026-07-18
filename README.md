@@ -6,9 +6,9 @@ A bilingual static GitHub Pages portfolio using Verdana, cleaned transparent cat
 
 - English `index.html` and Russian `ru.html`
 - Personal introduction, collaboration invitation, and current project
-- Dynamic `Now` block, recent GitHub activity, real last-commit times, and releases from `data/site-data.json`
+- Dynamic `Now` block, recent GitHub activity, and real last-commit times from `data/site-data.json`
 - GitHub Actions refresh on the first push and every six hours, plus manual inputs and optional `repository_dispatch`
-- Repository, Zenodo, and latest release links
+- Repository and Zenodo links
 - Desktop-only cat click animation with three randomly selected local meow recordings
 - Mobile cat rain with sound interaction disabled
 - Favicon, touch icon, Open Graph image, canonical and language links

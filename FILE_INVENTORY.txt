@@ -5,8 +5,8 @@ ru.html                                 Russian portfolio page
 404.html                                Bilingual not-found page
 styles.css                              Responsive layout, cat rain, activity timeline, and interactions
 script.js                               JSON rendering, real commit-time formatting, and random meows
-data/site-data.json                     Now text and cached GitHub work/commit/release data
-scripts/update_site_data.py             GitHub API repositories, commits, and releases updater
+data/site-data.json                     Now text and cached GitHub work/commit data
+scripts/update_site_data.py             GitHub API repositories and commits updater
 .github/workflows/refresh-site-data.yml Push/scheduled/manual/webhook refresh workflow
 assets/Meow.ogg                         Local cat recording by Dan Crosby
 assets/meow-pixabay-sound-garage.mp3    Local Cat Meow 8 FX recording
