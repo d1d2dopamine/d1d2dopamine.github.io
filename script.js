@@ -61,7 +61,6 @@
       const branch = encodeURIComponent(repo.default_branch || 'main');
       const item = await fetchJson(`${githubApi}/repos/${repo.full_name}/commits/${branch}`);
       const commit = item.commit || {};
-      const message = String(commit.message || '').split('\n')[0].trim();
       return {
         name: repo.name === 'the-Allosteric-Sprint-hypothesis'
           ? 'The Allostatic Sprint Hypothesis'
@@ -69,12 +68,7 @@
         description: repo.description || '',
         url: repo.html_url,
         updatedAt: repo.updated_at,
-        lastCommitAt: commit.committer?.date || commit.author?.date || null,
-        latestCommit: {
-          title: message || String(item.sha || '').slice(0, 7),
-          url: item.html_url,
-          sha: String(item.sha || '').slice(0, 7)
-        }
+        lastCommitAt: commit.committer?.date || commit.author?.date || null
       };
     } catch {
       return null;
@@ -96,7 +90,7 @@
         .map((result) => result.status === 'fulfilled' ? result.value : null)
         .filter((work) => work?.lastCommitAt)
         .sort((a, b) => new Date(b.lastCommitAt) - new Date(a.lastCommitAt))
-        .slice(0, 5);
+        .slice(0, 1);
       if (works.length) data.latestWorks = works;
     } catch {
       // Cached data from GitHub Actions remains the fallback if the API is unavailable.
@@ -116,18 +110,15 @@
 
     if (feed && Array.isArray(data.latestWorks) && data.latestWorks.length) {
       feed.replaceChildren();
-      data.latestWorks.slice(0, 5).forEach((work) => {
+      data.latestWorks.slice(0, 1).forEach((work) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         const name = document.createElement('span');
         const commitTime = document.createElement('time');
-        const commit = work.latestCommit;
-        link.href = commit?.url || work.url;
+        link.href = work.url;
         link.target = '_blank';
         link.rel = 'noreferrer';
-        name.textContent = commit?.title
-          ? `${work.name} — ${commit.title}`
-          : work.name;
+        name.textContent = work.name;
         const formattedCommit = formatCommitTime(work.lastCommitAt);
         if (formattedCommit) {
           commitTime.dateTime = work.lastCommitAt;

@@ -56,11 +56,7 @@ def latest_commit(full_name: str, default_branch: str):
     commit = item.get("commit") or {}
     committer = (commit.get("committer") or {}).get("date")
     author = (commit.get("author") or {}).get("date")
-    message = str(commit.get("message") or "").splitlines()[0].strip()
     return {
-        "title": message or str(item.get("sha") or "")[:7],
-        "url": item.get("html_url"),
-        "sha": str(item.get("sha") or "")[:7],
         "date": committer or author,
     }
 
@@ -118,16 +114,11 @@ def main():
                     "url": repo["html_url"],
                     "updatedAt": repo["updated_at"],
                     "lastCommitAt": commit["date"],
-                    "latestCommit": {
-                        "title": commit["title"],
-                        "url": commit["url"],
-                        "sha": commit["sha"],
-                    },
                     "release": latest_release(repo["full_name"]),
                 }
             )
         works.sort(key=lambda work: work["lastCommitAt"], reverse=True)
-        works = works[:5]
+        works = works[:1]
         if works:
             data["latestWorks"] = works
         data["updated"] = date.today().isoformat()
