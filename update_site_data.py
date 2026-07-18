@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Refresh public GitHub activity, commit times, and optional Now text."""
+"""Refresh public GitHub activity, commit times, releases, and optional Now text."""
 from __future__ import annotations
 
 import json
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -30,14 +31,38 @@ def request_json(url: str):
         return json.load(response)
 
 
-def latest_commit_time(full_name: str):
-    commits = request_json(f"{API_ROOT}/repos/{full_name}/commits?per_page=1")
-    if not commits:
-        return None
-    commit = commits[0].get("commit") or {}
+def latest_release(full_name: str):
+    try:
+        release = request_json(f"{API_ROOT}/repos/{full_name}/releases/latest")
+        return {"name": release["tag_name"], "url": release["html_url"]}
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return None
+        raise
+
+
+def latest_commit(full_name: str, default_branch: str):
+    """Return the latest commit on the repository's default branch."""
+    branch = urllib.parse.quote(default_branch, safe="")
+    try:
+        item = request_json(f"{API_ROOT}/repos/{full_name}/commits/{branch}")
+    except urllib.error.HTTPError as error:
+        # Empty repositories and repositories whose commits are unavailable
+        # should not prevent all other activity from being refreshed.
+        if error.code in (404, 409, 422):
+            return None
+        raise
+
+    commit = item.get("commit") or {}
     committer = (commit.get("committer") or {}).get("date")
     author = (commit.get("author") or {}).get("date")
-    return committer or author
+    message = str(commit.get("message") or "").splitlines()[0].strip()
+    return {
+        "title": message or str(item.get("sha") or "")[:7],
+        "url": item.get("html_url"),
+        "sha": str(item.get("sha") or "")[:7],
+        "date": committer or author,
+    }
 
 
 def incoming_now():
@@ -69,7 +94,7 @@ def main():
     try:
         repos = request_json(
             f"{API_ROOT}/users/{USERNAME}/repos"
-            "?sort=updated&direction=desc&per_page=20&type=owner"
+            "?sort=pushed&direction=desc&per_page=100&type=owner"
         )
         works = []
         for repo in repos:
@@ -78,6 +103,9 @@ def main():
                 or repo.get("archived")
                 or repo["name"].lower() == f"{USERNAME}.github.io".lower()
             ):
+                continue
+            commit = latest_commit(repo["full_name"], repo.get("default_branch") or "main")
+            if not commit or not commit["date"]:
                 continue
             works.append(
                 {
@@ -89,11 +117,17 @@ def main():
                     "description": repo.get("description") or "",
                     "url": repo["html_url"],
                     "updatedAt": repo["updated_at"],
-                    "lastCommitAt": latest_commit_time(repo["full_name"]),
+                    "lastCommitAt": commit["date"],
+                    "latestCommit": {
+                        "title": commit["title"],
+                        "url": commit["url"],
+                        "sha": commit["sha"],
+                    },
+                    "release": latest_release(repo["full_name"]),
                 }
             )
-            if len(works) == 5:
-                break
+        works.sort(key=lambda work: work["lastCommitAt"], reverse=True)
+        works = works[:5]
         if works:
             data["latestWorks"] = works
         data["updated"] = date.today().isoformat()

@@ -1,0 +1,57 @@
+name: Refresh site data
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'data/site-data.json'
+  schedule:
+    # Browser rendering refreshes live; this keeps a recent static fallback too.
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+    inputs:
+      now_en:
+        description: 'New English Now text (optional)'
+        required: false
+        type: string
+      now_ru:
+        description: 'New Russian Now text (optional)'
+        required: false
+        type: string
+  repository_dispatch:
+    types: [refresh_site, update_now]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-site-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh JSON
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: d1d2dopamine
+          NOW_EN: ${{ inputs.now_en }}
+          NOW_RU: ${{ inputs.now_ru }}
+          EVENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        run: python scripts/update_site_data.py
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/site-data.json
+          if git diff --cached --quiet; then
+            echo 'No site data changes.'
+          else
+            git commit -m 'chore: refresh site data'
+            git push
+          fi

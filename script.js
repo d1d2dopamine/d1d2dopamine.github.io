@@ -45,33 +45,62 @@
     };
   };
 
-  const fetchLatestCommitTime = async (work) => {
-    if (!work.url) return;
+  const githubApi = 'https:' + '//api.github.com';
+
+  const fetchJson = async (url) => {
+    const response = await fetch(url, {
+      cache: 'no-store',
+      headers: { Accept: 'application/vnd.github+json' }
+    });
+    if (!response.ok) throw new Error(`GitHub API: ${response.status}`);
+    return response.json();
+  };
+
+  const fetchLatestCommit = async (repo) => {
     try {
-      const repositoryUrl = new URL(work.url);
-      if (repositoryUrl.hostname !== 'github.com') return;
-      const [owner, repository] = repositoryUrl.pathname.split('/').filter(Boolean);
-      if (!owner || !repository) return;
-      const apiRoot = 'https:' + '//api.github.com';
-      const response = await fetch(
-        `${apiRoot}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/commits?per_page=1`,
-        {
-          cache: 'no-store',
-          headers: { Accept: 'application/vnd.github+json' }
+      const branch = encodeURIComponent(repo.default_branch || 'main');
+      const item = await fetchJson(`${githubApi}/repos/${repo.full_name}/commits/${branch}`);
+      const commit = item.commit || {};
+      const message = String(commit.message || '').split('\n')[0].trim();
+      return {
+        name: repo.name === 'the-Allosteric-Sprint-hypothesis'
+          ? 'The Allostatic Sprint Hypothesis'
+          : repo.name.replaceAll('-', ' '),
+        description: repo.description || '',
+        url: repo.html_url,
+        updatedAt: repo.updated_at,
+        lastCommitAt: commit.committer?.date || commit.author?.date || null,
+        latestCommit: {
+          title: message || String(item.sha || '').slice(0, 7),
+          url: item.html_url,
+          sha: String(item.sha || '').slice(0, 7)
         }
-      );
-      if (!response.ok) return;
-      const commits = await response.json();
-      const commit = commits[0]?.commit;
-      work.lastCommitAt = commit?.committer?.date || commit?.author?.date || null;
+      };
     } catch {
-      // The scheduled GitHub Action remains the primary source if the public API is unavailable.
+      return null;
     }
   };
 
-  const hydrateCommitTimes = async (data) => {
-    if (!Array.isArray(data.latestWorks)) return;
-    await Promise.allSettled(data.latestWorks.slice(0, 5).map(fetchLatestCommitTime));
+  const hydrateLatestActivity = async (data) => {
+    try {
+      // Discover repositories on every page load, so a commit in a new or
+      // previously inactive repository is not hidden until the next Action run.
+      const repos = await fetchJson(
+        `${githubApi}/users/d1d2dopamine/repos?sort=pushed&direction=desc&per_page=20&type=owner`
+      );
+      const candidates = repos
+        .filter((repo) => !repo.fork && !repo.archived && repo.name.toLowerCase() !== 'd1d2dopamine.github.io')
+        .slice(0, 10);
+      const results = await Promise.allSettled(candidates.map(fetchLatestCommit));
+      const works = results
+        .map((result) => result.status === 'fulfilled' ? result.value : null)
+        .filter((work) => work?.lastCommitAt)
+        .sort((a, b) => new Date(b.lastCommitAt) - new Date(a.lastCommitAt))
+        .slice(0, 5);
+      if (works.length) data.latestWorks = works;
+    } catch {
+      // Cached data from GitHub Actions remains the fallback if the API is unavailable.
+    }
   };
 
   const renderSiteData = (data) => {
@@ -92,10 +121,13 @@
         const link = document.createElement('a');
         const name = document.createElement('span');
         const commitTime = document.createElement('time');
-        link.href = work.url;
+        const commit = work.latestCommit;
+        link.href = commit?.url || work.url;
         link.target = '_blank';
         link.rel = 'noreferrer';
-        name.textContent = work.name;
+        name.textContent = commit?.title
+          ? `${work.name} — ${commit.title}`
+          : work.name;
         const formattedCommit = formatCommitTime(work.lastCommitAt);
         if (formattedCommit) {
           commitTime.dateTime = work.lastCommitAt;
@@ -117,7 +149,7 @@
       return response.json();
     })
     .then(async (data) => {
-      await hydrateCommitTimes(data);
+      await hydrateLatestActivity(data);
       renderSiteData(data);
     })
     .catch(() => {

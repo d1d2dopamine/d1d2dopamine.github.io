@@ -11,7 +11,12 @@
       "description": "Exploratory reanalysis of public ADHD-related datasets.",
       "url": "https://github.com/d1d2dopamine/the-Allosteric-Sprint-hypothesis",
       "updatedAt": "2026-07-17T00:00:00Z",
-      "lastCommitAt": null
+      "lastCommitAt": null,
+      "latestCommit": null,
+      "release": {
+        "name": "v1.1.1",
+        "url": "https://github.com/d1d2dopamine/the-Allosteric-Sprint-hypothesis/releases/tag/v1.1.1"
+      }
     }
   ]
 }
