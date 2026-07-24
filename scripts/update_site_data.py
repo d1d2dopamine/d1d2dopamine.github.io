@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -40,14 +41,24 @@ def latest_release(full_name: str):
         raise
 
 
-def latest_commit_time(full_name: str):
-    commits = request_json(f"{API_ROOT}/repos/{full_name}/commits?per_page=1")
-    if not commits:
-        return None
-    commit = commits[0].get("commit") or {}
+def latest_commit(full_name: str, default_branch: str):
+    """Return the latest commit on the repository's default branch."""
+    branch = urllib.parse.quote(default_branch, safe="")
+    try:
+        item = request_json(f"{API_ROOT}/repos/{full_name}/commits/{branch}")
+    except urllib.error.HTTPError as error:
+        # Empty repositories and repositories whose commits are unavailable
+        # should not prevent all other activity from being refreshed.
+        if error.code in (404, 409, 422):
+            return None
+        raise
+
+    commit = item.get("commit") or {}
     committer = (commit.get("committer") or {}).get("date")
     author = (commit.get("author") or {}).get("date")
-    return committer or author
+    return {
+        "date": committer or author,
+    }
 
 
 def incoming_now():
@@ -79,7 +90,7 @@ def main():
     try:
         repos = request_json(
             f"{API_ROOT}/users/{USERNAME}/repos"
-            "?sort=updated&direction=desc&per_page=20&type=owner"
+            "?sort=pushed&direction=desc&per_page=100&type=owner"
         )
         works = []
         for repo in repos:
@@ -88,6 +99,9 @@ def main():
                 or repo.get("archived")
                 or repo["name"].lower() == f"{USERNAME}.github.io".lower()
             ):
+                continue
+            commit = latest_commit(repo["full_name"], repo.get("default_branch") or "main")
+            if not commit or not commit["date"]:
                 continue
             works.append(
                 {
@@ -99,12 +113,13 @@ def main():
                     "description": repo.get("description") or "",
                     "url": repo["html_url"],
                     "updatedAt": repo["updated_at"],
-                    "lastCommitAt": latest_commit_time(repo["full_name"]),
+                    "lastCommitAt": commit["date"],
                     "release": latest_release(repo["full_name"]),
                 }
             )
-            if len(works) == 5:
-                break
+        works.sort(key=lambda work: work["lastCommitAt"], reverse=True)
+        # The page renders up to three entries; keep the payload small.
+        works = works[:3]
         if works:
             data["latestWorks"] = works
         data["updated"] = date.today().isoformat()
