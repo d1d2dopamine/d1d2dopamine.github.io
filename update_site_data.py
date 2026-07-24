@@ -118,7 +118,8 @@ def main():
                 }
             )
         works.sort(key=lambda work: work["lastCommitAt"], reverse=True)
-        works = works[:1]
+        # The page renders up to three entries; keep the payload small.
+        works = works[:3]
         if works:
             data["latestWorks"] = works
         data["updated"] = date.today().isoformat()

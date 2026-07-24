@@ -5,9 +5,10 @@ on:
     branches: [main]
     paths-ignore:
       - 'data/site-data.json'
+  # The browser no longer calls the GitHub API, so freshness depends on this
+  # schedule. Hourly keeps the feed current at a trivial Actions cost.
   schedule:
-    # Browser rendering refreshes live; this keeps a recent static fallback too.
-    - cron: '17,47 * * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       now_en:

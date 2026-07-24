@@ -34,11 +34,12 @@ body {
   width: var(--size);
   height: auto;
   opacity: .52;
-  filter: grayscale(100%) contrast(.96) brightness(.9);
+  /* Grayscale is baked into the WebP files, so no per-frame CSS filter here. */
+  filter: contrast(.96) brightness(.9);
   animation: cat-fall var(--duration) linear var(--delay) infinite;
   scale: 1;
   transition: scale 150ms ease, filter 150ms ease;
-  will-change: transform, scale;
+  will-change: transform;
 }
 .cat-rain img:nth-child(1)  { --left: 2%;  --size: 118px; --duration: 17s; --delay: -3s;  --drift: 45px;  --turn: 16deg; }
 .cat-rain img:nth-child(2)  { --left: 13%; --size: 150px; --duration: 22s; --delay: -17s; --drift: -32px; --turn: -12deg; }
@@ -152,6 +153,26 @@ h3 a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset
   font-size: 11px;
   letter-spacing: .025em;
 }
+.sound-toggle {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: #ededed;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+.sound-toggle:hover,
+.sound-toggle:focus-visible { color: #fff; background: rgba(255,255,255,.10); transform: translateY(-1px); }
+.sound-toggle svg { width: 21px; height: 21px; fill: currentColor; }
+.sound-toggle .icon-sound-off,
+.sound-toggle.is-muted .icon-sound-on { display: none; }
+.sound-toggle.is-muted .icon-sound-off { display: block; }
+.sound-toggle.is-muted { color: var(--quiet); }
 .lang-link {
   width: 38px;
   height: 38px;
@@ -200,6 +221,7 @@ h3 a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset
 .error-page .error-cat { width: 150px; margin: 0 0 30px; opacity: .72; }
 .error-page p { max-width: 520px; }
 .error-page a { color: var(--text); text-underline-offset: 4px; }
+.error-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px !important; }
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -226,13 +248,14 @@ h3 a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset
     pointer-events: auto;
     cursor: pointer;
   }
-  .cat-rain img:hover { filter: grayscale(70%) contrast(1.02) brightness(1.02); }
+  .cat-rain img:hover { filter: contrast(1.06) brightness(1.15); }
   .cat-rain img.is-meowing { scale: 1.18; }
 }
 
 @media (max-width: 620px) {
   body { font-size: 14px; background: #151515; }
-  .cat-rain { z-index: 2; }
+  /* Cats stay behind the content: a haze over text hurt readability. */
+  .cat-rain { z-index: 0; }
   .cat-rain img {
     width: calc(var(--size) * .52);
     opacity: .17;
@@ -248,6 +271,7 @@ h3 a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset
   header { min-height: 72px; }
   nav { gap: 4px; }
   nav a { width: 38px; height: 40px; }
+  .sound-toggle { display: none; }
   nav .lang-link { width: 32px; font-size: 10px; }
   section { padding: 38px 0; }
   .intro { padding-top: 48px; }
@@ -265,5 +289,6 @@ h3 a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   main, .cursor, .cat-rain img { animation: none; }
+  .sound-toggle { transition: none; }
   .cat-rain img { display: none; }
 }

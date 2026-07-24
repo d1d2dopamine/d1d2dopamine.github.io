@@ -4,16 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="D1D2DOPAMINE — self-taught work in neuroscience, psychology, open datasets, and reproducible research.">
+  <meta name="author" content="d1d2dopamine">
   <meta name="theme-color" content="#151515">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://d1d2dopamine.github.io/">
+  <meta property="og:site_name" content="D1D2DOPAMINE">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ru_RU">
   <meta property="og:title" content="D1D2DOPAMINE — neuroscience, psychology, and open research">
   <meta property="og:description" content="A growing public portfolio of independent research, reproducible code, and honest results.">
-  <meta property="og:image" content="https://d1d2dopamine.github.io/assets/og-image.png">
+  <meta property="og:image" content="https://d1d2dopamine.github.io/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="D1D2DOPAMINE — neuroscience, psychology, and open research">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="D1D2DOPAMINE — neuroscience, psychology, and open research">
   <meta name="twitter:description" content="A growing public portfolio of independent research, reproducible code, and honest results.">
-  <meta name="twitter:image" content="https://d1d2dopamine.github.io/assets/og-image.png">
+  <meta name="twitter:image" content="https://d1d2dopamine.github.io/assets/og-image.jpg">
   <title>D1D2DOPAMINE — neuroscience, psychology, and open research</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -50,16 +57,16 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="cat-rain" aria-hidden="true">
-    <img src="assets/cats/cat-01.png" alt=""><img src="assets/cats/cat-05.png" alt="">
-    <img src="assets/cats/cat-09.png" alt=""><img src="assets/cats/cat-03.png" alt="">
-    <img src="assets/cats/cat-11.png" alt=""><img src="assets/cats/cat-07.png" alt="">
-    <img src="assets/cats/cat-02.png" alt=""><img src="assets/cats/cat-10.png" alt="">
-    <img src="assets/cats/cat-06.png" alt=""><img src="assets/cats/cat-12.png" alt="">
-    <img src="assets/cats/cat-04.png" alt=""><img src="assets/cats/cat-08.png" alt="">
-    <img src="assets/cats/cat-10.png" alt=""><img src="assets/cats/cat-01.png" alt="">
-    <img src="assets/cats/cat-06.png" alt=""><img src="assets/cats/cat-03.png" alt="">
-    <img src="assets/cats/cat-11.png" alt=""><img src="assets/cats/cat-08.png" alt="">
+  <div class="cat-rain">
+    <img src="assets/cats/cat-01.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-05.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-09.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-03.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-11.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-07.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-02.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-10.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-06.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-12.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-04.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-08.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-10.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-01.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-06.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-03.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+    <img src="assets/cats/cat-11.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low"><img src="assets/cats/cat-08.webp" alt="" width="300" height="300" decoding="async" fetchpriority="low">
   </div>
 
   <main>
@@ -75,20 +82,26 @@
         <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=d1d2dopamine%40gmail.com" target="_blank" rel="noreferrer" aria-label="Email" title="Email">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm9 8.2L20.3 6H3.7L12 12.2Zm0 2.5L3 8v10h18V8l-9 6.7Z"/></svg>
         </a>
-        <a class="lang-link" href="ru.html" aria-label="Русская версия" title="Русская версия">RU</a>
+        <button class="sound-toggle" type="button" data-sound-toggle hidden
+                data-label-on="Cat sounds on" data-label-off="Cat sounds off"
+                aria-pressed="true" aria-label="Cat sounds on" title="Cat sounds on">
+          <svg class="icon-sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 16.5 12Zm-2.5-8.7v2.06A7 7 0 0 1 14 18.64v2.06a9 9 0 0 0 0-17.4Z"/></svg>
+          <svg class="icon-sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm17.3.7-1.4-1.4L17.6 10.6l-2.3-2.3-1.4 1.4 2.3 2.3-2.3 2.3 1.4 1.4 2.3-2.3 2.3 2.3 1.4-1.4-2.3-2.3 2.3-2.3Z"/></svg>
+        </button>
+        <a class="lang-link" href="ru.html" hreflang="ru" aria-label="Русская версия" title="Русская версия">RU</a>
       </nav>
     </header>
 
     <section class="intro" id="top">
-      <h1>Who am I?</h1>
-      <p class="summary">Self-taught, interested in neuroscience, psychology, and reproducible research.</p>
+      <h1>Independent research in neuroscience and psychology</h1>
+      <p class="summary">Self-taught. Reproducible code, open datasets, and honest null results.</p>
       <blockquote>
         Evidence matters more than expectations, and reproducibility matters more than a compelling story.
       </blockquote>
     </section>
 
     <section class="about">
-      <h2 class="visually-hidden">About</h2>
+      <h2>Who am I?</h2>
       <p>I am especially interested in neuroscience and psychology. People whose work and way of explaining science I admire include Vladimir Alipov and Robert Sapolsky.</p>
       <p>I use GitHub and social platforms as a public notebook and a growing portfolio. My long-term goal is to study at a strong university, gain formal training, and turn independent curiosity into work I can do with other people.</p>
       <p>I would also like to contribute to a team. I am used to learning independently, but I want experience discussing methods, reviewing each other’s work, and building something that would be difficult to do alone.</p>
@@ -119,10 +132,10 @@
       <ul class="work-feed" data-latest-work>
         <li><a href="https://github.com/d1d2dopamine/the-Allosteric-Sprint-hypothesis" target="_blank" rel="noreferrer">The Allostatic Sprint Hypothesis</a><time hidden></time></li>
       </ul>
-      <p class="feed-note" data-feed-note>Updated automatically from public GitHub data.</p>
+      <p class="feed-note" data-feed-note data-feed-note-stale="Last refreshed from public GitHub data in %s.">Updated automatically from public GitHub data.</p>
     </section>
 
   </main>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
