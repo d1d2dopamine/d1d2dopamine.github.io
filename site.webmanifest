@@ -1,13 +1,13 @@
 {
-  "name": "D1D2DOPAMINE",
-  "short_name": "D1D2",
-  "description": "Independent work in neuroscience, psychology, and open research.",
+  "name": "d1d2dopamine",
+  "short_name": "d1d2",
+  "description": "Public repositories: MVS-analyzer, allostatic-sprint-hypothesis, ikna, vespian, Gitctap.",
   "lang": "en",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#151515",
-  "theme_color": "#151515",
+  "background_color": "#05070d",
+  "theme_color": "#05070d",
   "icons": [
     {"src": "/assets/favicon.png", "sizes": "64x64", "type": "image/png"},
     {"src": "/assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},

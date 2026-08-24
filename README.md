@@ -1,51 +1,28 @@
-# D1D2DOPAMINE personal site — dynamic static version
+# d1d2dopamine.github.io
 
-A bilingual static GitHub Pages portfolio using Verdana, cleaned transparent cat cutouts, local real-cat recordings, and a restrained monochrome design.
+Static bilingual portfolio with separate Home, About, and Projects pages. No build step and no external runtime dependencies.
 
-## Included
+## Preview
 
-- English `index.html` and Russian `ru.html`
-- Personal introduction, collaboration invitation, and current project
-- Dynamic `Now` block, recent GitHub activity, and real last-commit times from `data/site-data.json`
-- GitHub Actions refresh on the first push and hourly, plus manual inputs and optional `repository_dispatch`
-- The browser never calls `api.github.com`. All GitHub data is fetched server-side by the Action with an authenticated token, so visitors cannot exhaust the anonymous 60 requests/hour limit
-- Cached data older than seven days is labelled with its last-refresh date instead of being presented as a live feed
-- Repository and Zenodo links
-- Grayscale WebP cat cutouts, about 110 KB in total instead of 920 KB of PNG
-- Desktop-only cat click animation with three randomly selected local meow recordings and a mute toggle stored in `localStorage`
-- Mobile cat rain with sound interaction disabled
-- Favicon, touch icon, Open Graph image, canonical and language links
-- `robots.txt`, `sitemap.xml`, `site.webmanifest`, structured data, and `404.html`
-- No external font, framework, analytics, or browser-side secret
-
-## Open locally
-
-Keep all files and folders together. Double-click `index.html` and choose any browser. Browsers may block local JSON fetches, but complete fallback text and links remain visible. To test dynamic JSON locally, run:
-
-```bash
+```sh
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/`.
+Open `http://localhost:8000`.
 
-## Publish with GitHub Pages
+## Background video
 
-1. Create a public repository named `d1d2dopamine.github.io`.
-2. Upload the contents of this folder to the repository root.
-3. Open **Settings → Pages**.
-4. Select **Deploy from a branch**, then `main` and `/ (root)`.
-5. Open `https://d1d2dopamine.github.io/` after deployment.
-6. Open the **Actions** tab and confirm that `Refresh site data` completed successfully. The first push starts it automatically and fills real commit times; no placeholder time is published.
+All Home, About, and Projects pages use:
 
-Read `DYNAMIC_CONTENT.md` for manual updates, scheduled refreshes, and safe webhook usage. Read `docs/MEOW_CANDIDATES.md` for additional licensed sound candidates.
+- `assets/background.webm`
+- `assets/background.mp4`
+- `assets/background-poster.jpg`
 
-## Layout
+The upscaled 16:9 source is exported at 1920×1080 and displayed with `object-fit: cover`, so it fills the viewport on every device. The final two seconds crossfade into the beginning to hide the loop seam. Both web versions have no audio stream. Users who request reduced motion see the poster frame instead.
 
-```
-.github/workflows/refresh-site-data.yml   scheduled refresh
-scripts/update_site_data.py               the only copy of the refresh script
-data/site-data.json                       the only copy of the published data
-docs/                                     working notes, not published content
-```
+## Pages
 
-There is deliberately no second copy of the workflow, the refresh script, or the data file in the repository root. Duplicates previously caused the Action to run an older version of the script.
+- English: `index.html`, `about.html`, `projects.html`
+- Russian: `ru.html`, `about-ru.html`, `projects-ru.html`
+
+Home, About, and Projects are grouped in the header beside the social icon buttons. All six Home, About, and Projects sections are embedded in the initial HTML and switched locally without fetching another page. The background video element is never replaced, while session storage preserves playback time if a full reload occurs. The language switch preserves the current section. There is no footer, video control, counter, or numbered About section.
