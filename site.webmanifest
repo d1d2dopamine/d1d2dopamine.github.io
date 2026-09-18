@@ -1,19 +1,28 @@
 {
-  "id": "/",
   "name": "d1d2dopamine",
-  "short_name": "d1d2",
-  "description": "Independent software, research tools, and reproducible open-data projects by d1d2dopamine.",
-  "lang": "en",
+  "short_name": "d1d2dopamine",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "background_color": "#05070d",
-  "theme_color": "#05070d",
+  "background_color": "#05070a",
+  "theme_color": "#07090d",
   "icons": [
-    {"src": "/assets/favicon.png", "sizes": "64x64", "type": "image/png"},
-    {"src": "/assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
-    {"src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "/assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
