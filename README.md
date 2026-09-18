@@ -1,6 +1,6 @@
-# d1d2dopamine.github.io
+# d1d2dopamine.is-a.dev
 
-Static bilingual portfolio with separate Home, About, and Projects pages. No build step and no external runtime dependencies.
+Static bilingual portfolio for `https://d1d2dopamine.is-a.dev`. No build step and no external runtime dependencies.
 
 ## Preview
 
@@ -10,19 +10,25 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000`.
 
-## Background video
-
-All Home, About, and Projects pages use:
-
-- `assets/background.webm`
-- `assets/background.mp4`
-- `assets/background-poster.jpg`
-
-The upscaled 16:9 source is exported at 1920×1080 and displayed with `object-fit: cover`, so it fills the viewport on every device. The final two seconds crossfade into the beginning to hide the loop seam. Both web versions have no audio stream. Users who request reduced motion see the poster frame instead.
-
 ## Pages
 
 - English: `index.html`, `about.html`, `projects.html`
 - Russian: `ru.html`, `about-ru.html`, `projects-ru.html`
 
-Home, About, and Projects are grouped in the header beside the social icon buttons. All six Home, About, and Projects sections are embedded in the initial HTML and switched locally without fetching another page. The background video element is never replaced, while session storage preserves playback time if a full reload occurs. The language switch preserves the current section. There is no footer, video control, counter, or numbered About section.
+Each URL is a real standalone HTML document. This keeps metadata, canonical URLs, language alternates, browser history, accessibility, and search indexing straightforward. The language switch preserves the current section.
+
+## Background video
+
+All main pages use:
+
+- `assets/background.webm` — VP9, 1280×720, 24 fps
+- `assets/background.mp4` — H.264 fallback, 1280×720, 24 fps
+- `assets/background-poster.jpg`
+
+The video is decorative and fills the viewport with `object-fit: cover`. Its playback position is stored on page exit so navigation between documents feels less abrupt. Users who request reduced motion see the poster image instead of the video.
+
+## Assets and metadata
+
+- Canonical URLs, Open Graph tags, Twitter card tags, `robots.txt`, and `sitemap.xml` point to the custom domain.
+- `site.webmanifest` includes a dedicated padded maskable icon.
+- Shared assets use root-relative paths so nested 404 URLs cannot break CSS or icons.
