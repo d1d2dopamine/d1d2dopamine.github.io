@@ -1,13 +1,20 @@
-# Third-party notices
+# Asset and third-party notices
 
-Nothing third-party is bundled with this site.
+## Shantell Sans
 
-- **Background video** — `assets/night.mp4`, `assets/night.webm` and the poster frame
-  `assets/night-poster.jpg` come from footage shot by the site owner. The audio track was removed,
-  the frame was cropped to sky only (no roofline, no tree line), scaled to 1280x720 and re-encoded as
-  H.264 and VP9.
-- **Icons** — `favicon.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` are square crops
-  of the same frame.
-- **Fonts** — none are shipped. The pages ask for Georgia and Helvetica, which the reader's device
-  provides, and fall back to any serif or sans-serif it has.
-- **Code** — no libraries, no frameworks, no analytics, no JavaScript at all.
+- Typeface: Shantell Sans, by Shantell Martin and ArrowType; Cyrillic design by Anya Danilova.
+- Project: https://shantellsans.com/
+- Distribution source: https://github.com/google/fonts/tree/main/ofl/shantellsans
+- File: `assets/fonts/shantell-sans-variable.woff2`.
+- License: SIL Open Font License 1.1. The full original license and copyright notice are bundled at `assets/fonts/ShantellSans-OFL.txt`.
+- The source variable TrueType font was converted to WOFF2 without changing its glyphs, names, or design.
+
+## Site imagery
+
+- `assets/wallpaper.png` is copied unchanged from the user-supplied `d1d2dopamine_neocities_v5_12/site/assets/wallpaper.png`.
+- Favicons and application icons are derived from the user-supplied `загрузка (17).jpg`. A square crop keeps the skull and hat centered; the maskable version adds a safe margin. The original supplied image is retained as `assets/site-icon-source.jpg`.
+- `assets/og-image.png` is a rendered preview of the updated site design using the supplied wallpaper and Shantell Sans.
+
+## Code
+
+The site uses plain HTML, CSS, and JavaScript, with no runtime libraries or analytics. `site.js` handles same-document navigation; `sw.js` provides persistent caching.
