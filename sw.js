@@ -1,11 +1,11 @@
 'use strict';
-const CACHE = 'd1d2dopamine-site-round7-v1';
+const CACHE = 'd1d2dopamine-site-round14-v1';
 const PREFIX = 'd1d2dopamine-site-';
 const FILES = [
   './', 'index.html', 'ru.html', 'about.html', 'about-ru.html', 'projects.html', 'projects-ru.html',
-  '404.html', 'favicon.ico?v=round7', 'styles.css?v=round7', 'site.js?v=round7', 'site.webmanifest?v=round7',
-  'assets/wallpaper.png', 'assets/og-image.png', 'assets/favicon.png?v=round7', 'assets/apple-touch-icon.png?v=round7',
-  'assets/icon-192.png?v=round7', 'assets/icon-512.png?v=round7', 'assets/icon-maskable-512.png?v=round7',
+  '404.html', 'favicon.ico?v=round14', 'styles.css?v=round14', 'site.js?v=round14', 'pixel-fx.js?v=round14', 'site.webmanifest?v=round14',
+  'assets/og-image.png', 'assets/favicon.png?v=round14', 'assets/apple-touch-icon.png?v=round14',
+  'assets/icon-192.png?v=round14', 'assets/icon-512.png?v=round14', 'assets/icon-maskable-512.png?v=round14',
   'assets/fonts/shantell-sans-variable.woff2',
 ];
 const allowed = new Set(FILES.map(file => new URL(file, self.registration.scope).href));
