@@ -48,9 +48,11 @@
   // visible range lives in the top quarter, so the aurora shows up as rare
   // wisps on a dark panel instead of a continuous wash. The top end is held
   // down deliberately - it is the brightness ceiling of the whole animation.
+  // Tones are sampled from assets/background-night.jpg (deep night blue), so
+  // the pixels read as part of the photo instead of a separate colour plate.
   const PALETTE = [
-    [3, 4, 7], [5, 6, 12], [8, 10, 20], [14, 18, 34],
-    [24, 30, 54], [40, 50, 86], [62, 74, 122], [86, 100, 156], [104, 118, 182]
+    [3, 8, 14], [5, 13, 23], [8, 20, 34], [12, 29, 48],
+    [17, 40, 65], [23, 53, 84], [30, 67, 104], [38, 82, 124], [48, 98, 144]
   ];
 
   const STEP = 1000 / FPS;

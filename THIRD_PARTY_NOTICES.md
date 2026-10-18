@@ -12,6 +12,7 @@
 ## Site imagery
 
 - `assets/wallpaper.png` is copied unchanged from the user-supplied `d1d2dopamine_neocities_v5_12/site/assets/wallpaper.png`.
+- `assets/background-night.jpg` is the user-supplied night-city photograph (supplied as `загрузка (19) (1).jpg`), used as the page background and as the source of the site palette from round 15.
 - Favicons and application icons are derived from the user-supplied `загрузка (17).jpg`. A square crop keeps the skull and hat centered; the maskable version adds a safe margin. The original supplied image is retained as `assets/site-icon-source.jpg`.
 - `assets/og-image.png` is a rendered preview of the updated site design using the supplied wallpaper and Shantell Sans.
 

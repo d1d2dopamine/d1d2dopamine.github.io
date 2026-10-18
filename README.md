@@ -59,6 +59,16 @@ The supplied picture is used for the tab favicon, Apple touch icon, and web-app 
 
 Icon and manifest URLs have a new version query, and the worker precaches those exact URLs. Public copy, visual layout, colors, wallpaper, fonts, and navigation are unchanged.
 
+## Round 15: night-city background and matching windows
+
+The supplied night-city photograph is now the page background (`assets/background-night.jpg`, served with a round 15 query and precached by the worker). A translucent veil built from the photo's own navy tones keeps the sky band and the harbour lights muted instead of harsh; the flat colour behind it is `#041623`.
+
+The window panels are no longer near-black and opaque. They use a translucent navy tint (`rgba(6, 24, 40, .58)`) plus a small backdrop blur, so the photograph shows through and panel and background blend instead of meeting at a hard edge.
+
+The animated pixel field in `pixel-fx.js` was re-tuned to a palette sampled from the same photograph (near-black `#03080e` up to a soft mid-blue `#306290`) and its opacity was lowered slightly. The pixel effect, the panel tint, the overlays and the page therefore stay inside a single navy range with no bright or clashing colours. The window border accent is now `#31486a`, which supersedes the round 5 value while keeping the same role.
+
+Resource query versions and the worker cache name move to round 15, and the background image is added to the worker's file list. Close old site tabs after deployment to let a waiting worker activate.
+
 ## Review checks
 
 DOM tests cover the six entry pages, section/language changes, URL and metadata updates, back/forward, scrolling, focus, modifier clicks, and local-file fallback. Worker event tests cover precaching, offline page fallback, asset cache hits, fresh online HTML, and preservation of unrelated caches. The new Russian and English About sections were visually rendered at 1440 and 390 px widths; all six entry pages were checked for consistent view content, local resources, and metadata. Link targets were compared with round 2. A full browser was unavailable in the editing environment; actual browser rendering and service-worker installation should be reviewed in a normal browser.
