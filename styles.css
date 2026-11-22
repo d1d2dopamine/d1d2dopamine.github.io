@@ -30,33 +30,27 @@
   font-display: swap;
 }
 
-/* Option A — One cohesive world: matte deep cobalt + white architectural skyline + d1d2 chromatic cubes */
+/* Editorial Graphite & Cool Ash — mature matte charcoal + architectural skyline */
 :root {
   color-scheme: dark;
-  --bg: #041D52;
-  --bg-deep: #031642;
-  --bg-banner: #002B73;
-  --surface: #072462;
-  --surface-hover: #0B2D75;
-  --surface-chip: #0A296B;
+  --bg: #0E1116;
+  --bg-deep: #0A0D12;
+  --bg-banner: #131720;
+  --surface: #151921;
+  --surface-hover: #1C222D;
+  --surface-chip: #1B202B;
 
-  --line: rgba(190, 214, 255, 0.12);
-  --line-strong: rgba(190, 214, 255, 0.28);
+  --line: rgba(226, 232, 240, 0.09);
+  --line-strong: rgba(226, 232, 240, 0.20);
 
-  --text: #E2ECFC;
-  --text-soft: #B5CBEB;
-  --muted: #7F9FD1;
+  --text: #E6E8EC;
+  --text-soft: #B4BCC8;
+  --muted: #7E8796;
 
-  --accent: #74BDFF;
-  --accent-bright: #A8D4FF;
-  --accent-fill: #0E3582;
-
-  /* Chromatic cube accents sampled directly from avatar-d1d2.png */
-  --cube-cyan: #45D9EC;
-  --cube-violet: #9A74F7;
-  --cube-magenta: #EC68A8;
-  --cube-lime: #6BE37C;
-  --cube-amber: #F2B957;
+  --accent: #8BA6C4;
+  --accent-bright: #B0C7DF;
+  --accent-fill: #243041;
+  --accent-fill-hover: #2E3D52;
 
   --sans: "Geologica", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -144,7 +138,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(4, 29, 82, 0.94);
+  background: rgba(14, 17, 22, 0.94);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -361,7 +355,7 @@ main {
 }
 
 .btn-primary:hover {
-  background: #14439E;
+  background: var(--accent-fill-hover);
   color: var(--text);
 }
 
@@ -735,7 +729,7 @@ main {
 }
 
 .home-about .btn:hover {
-  background: #14439E;
+  background: var(--accent-fill-hover);
 }
 
 /* About Page */

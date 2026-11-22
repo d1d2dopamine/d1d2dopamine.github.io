@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v15"
+ASSET_V = "v16"
 PROJECT_TECH = {
     "ikna": [
         ("assets/tech/android.png", "Android 10+"),
@@ -358,7 +358,7 @@ def render_head(lang: str, page: str) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="d1d2dopamine">
-  <meta name="theme-color" content="#002B73">
+  <meta name="theme-color" content="#0E1116">
   <title>{escape(title)}</title>
   <meta name="description" content="{escape(desc)}">
   <link rel="canonical" href="{canon}">
