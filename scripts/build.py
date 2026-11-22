@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v10"
+ASSET_V = "v11"
 PROJECT_CHAR = {
     "MVS Analyzer": "assets/chars/char-elliot.webp",
     "Allostatic Sprint Hypothesis": "assets/chars/char-mads.webp",

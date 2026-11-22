@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'd1d2dopamine-site-v10';
+const CACHE = 'd1d2dopamine-site-v11';
 const PREFIX = 'd1d2dopamine-site-';
 const SHELL = [
   './',
@@ -10,9 +10,9 @@ const SHELL = [
   'projects-ru.html',
   'about.html',
   'about-ru.html',
-  'styles.css?v=v10',
-  'site.js?v=v10',
-  'assets/skyline-lines.png?v=v10',
+  'styles.css?v=v11',
+  'site.js?v=v11',
+  'assets/skyline-lines.png?v=v11',
   'assets/header-tiles.webp',
   'assets/bg-blueberries.webp',
 ];

@@ -966,11 +966,12 @@ main {
 
 .focus-char {
   position: absolute;
-  right: -8px;
+  right: -6px;
   bottom: 0;
-  height: 92%;
+  height: 76%;
+  max-height: calc(100% - 34px);
   width: auto;
-  max-width: 72%;
+  max-width: 68%;
   object-fit: contain;
   object-position: bottom right;
   opacity: 0.34;
