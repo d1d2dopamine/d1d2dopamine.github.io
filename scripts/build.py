@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v12"
+ASSET_V = "v13"
 CUBE_COLORS = [
     "var(--cube-cyan)",
     "var(--cube-violet)",
