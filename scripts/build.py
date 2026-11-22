@@ -6,14 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v14"
-CUBE_COLORS = [
-    "var(--cube-cyan)",
-    "var(--cube-violet)",
-    "var(--cube-lime)",
-    "var(--cube-amber)",
-    "var(--cube-magenta)",
-]
+ASSET_V = "v15"
 PROJECT_TECH = {
     "ikna": [
         ("assets/tech/android.png", "Android 10+"),
@@ -463,17 +456,13 @@ def render_flagship(lang: str, heading_tag: str = "h3") -> str:
 
 def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
     rows = []
-    for idx, p in enumerate(CONTENT[lang]["projects"], start=1):
-        color = CUBE_COLORS[(idx - 1) % len(CUBE_COLORS)]
+    for p in CONTENT[lang]["projects"]:
         tech = render_tech_icons(p["name"])
         links = "".join(
             f'<a href="{url}" rel="noopener">{escape(label)} ↗</a>'
             for label, url in p["links"]
         )
         rows.append(f"""        <li class="dossier-row" data-category="{p['category']}">
-          <div class="dossier-id">
-            <span class="cube-mark" style="--mark-color:{color}" aria-hidden="true"></span>
-          </div>
           <div class="dossier-main">
             <{heading_tag}><a href="{p['url']}" rel="noopener">{escape(p['name'])}</a></{heading_tag}>
             <div class="dossier-meta">
