@@ -376,13 +376,7 @@ def render_header(lang: str, page: str) -> str:
 
 
 def render_footer(lang: str, page: str) -> str:
-    c = CONTENT[lang]
-    return f"""  <footer class="site-footer">
-    <div class="container footer-inner">
-      <span class="footer-note">{escape(c['footer_note'])}</span>
-    </div>
-  </footer>
-  <script src="site.js?v={ASSET_V}" defer></script>
+    return f"""  <script src="site.js?v={ASSET_V}" defer></script>
 </body>
 </html>
 """
