@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v4"
+ASSET_V = "v5"
 CUBE_COLORS = [
     "var(--cube-cyan)",
     "var(--cube-violet)",
@@ -14,6 +14,50 @@ CUBE_COLORS = [
     "var(--cube-amber)",
     "var(--cube-magenta)",
 ]
+PROJECT_TECH = {
+    "ikna": [
+        ("assets/tech/android.png", "Android 10+"),
+        ("assets/tech/windows.png", "Windows x64"),
+        ("assets/tech/linux.png", "Linux AppImage"),
+        ("assets/tech/kotlin.png", "Kotlin"),
+        ("assets/tech/compose.svg", "Compose Multiplatform"),
+    ],
+    "MVS Analyzer": [
+        ("assets/tech/python.png", "Python"),
+        ("assets/tech/cli.png", "CLI / API"),
+    ],
+    "Allostatic Sprint Hypothesis": [
+        ("assets/tech/dataset.png", "Open Datasets"),
+        ("assets/tech/zenodo.png", "Zenodo"),
+    ],
+    "vespian": [
+        ("assets/tech/android.png", "Android"),
+        ("assets/tech/health.png", "Health Connect"),
+    ],
+    "trial3lib": [
+        ("assets/tech/kotlin.png", "Kotlin"),
+        ("assets/tech/compose.svg", "Jetpack Compose"),
+    ],
+    "Gitctap": [
+        ("assets/tech/python.png", "Python"),
+        ("assets/tech/git.png", "Git"),
+    ],
+}
+
+
+def render_tech_icons(name: str) -> str:
+    items = PROJECT_TECH.get(name, [])
+    if not items:
+        return ""
+    parts = []
+    for src, tip in items:
+        etip = escape(tip)
+        parts.append(
+            f'<span class="tech-icon" data-tip="{etip}" title="{etip}" aria-label="{etip}" tabindex="0">'
+            f'<img src="{src}" alt="" width="16" height="16" loading="lazy">'
+            f'</span>'
+        )
+    return '<span class="tech-icons">' + "".join(parts) + "</span>"
 
 GITHUB_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.12c.98 0 1.95.13 2.86.38 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.4-2.7 5.38-5.28 5.67.42.36.78 1.06.78 2.14v3.27c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>'
 X_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.73L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.25-8.29L2.97 2h6.4l4.42 5.84L18.9 2Zm-1.09 17.84h1.73L8.43 4.05H6.58l11.23 15.79Z"/></svg>'
@@ -362,9 +406,9 @@ def render_header(lang: str, page: str) -> str:
         current = ' aria-current="page"' if key == page else ""
         nav_links.append(f'<a href="{href}"{current}>{escape(c["nav"][key])}</a>')
     other_href = ROUTES[other][page]
-    atmo_bp = "Чертёж" if lang == "ru" else "Blueprint"
+    atmo_sky = "Небо" if lang == "ru" else "Sky"
     atmo_night = "Ночь" if lang == "ru" else "Night"
-    atmo_aria = "Переключить атмосферу: Чертёж или Ночь" if lang == "ru" else "Switch atmosphere between Blueprint and Night"
+    atmo_aria = "Переключить атмосферу: Небо или Ночь" if lang == "ru" else "Switch atmosphere between Sky and Night"
     return f"""  <a class="skip-link" href="#content">{escape(c['skip'])}</a>
   <header class="site-header">
     <div class="container header-inner">
@@ -377,9 +421,9 @@ def render_header(lang: str, page: str) -> str:
         </nav>
       </div>
       <div class="header-right">
-        <button type="button" class="atmo-toggle" data-atmo-toggle data-label-blueprint="{atmo_bp}" data-label-night="{atmo_night}" aria-pressed="false" aria-label="{atmo_aria}">
+        <button type="button" class="atmo-toggle" data-atmo-toggle data-label-sky="{atmo_sky}" data-label-night="{atmo_night}" aria-pressed="false" aria-label="{atmo_aria}">
           <span class="atmo-swatch" aria-hidden="true"></span>
-          <span data-atmo-label>{atmo_bp}</span>
+          <span data-atmo-label>{atmo_sky}</span>
         </button>
         <a class="icon-link" href="https://github.com/d1d2dopamine" rel="me noopener" aria-label="GitHub" title="GitHub">{GITHUB_SVG}</a>
         <a class="icon-link" href="https://x.com/d1d2dopamine" rel="me noopener" aria-label="X" title="X">{X_SVG}</a>
@@ -399,7 +443,7 @@ def render_footer(lang: str, page: str) -> str:
 
 def render_flagship(lang: str, heading_tag: str = "h3") -> str:
     f = CONTENT[lang]["flagship"]
-    tags = "".join(f'<span class="tag">{escape(t)}</span>' for t in f["tags"])
+    tech = render_tech_icons(f["name"])
     return f"""      <article class="flagship" data-category="{f['category']}">
         <div>
           <div class="flagship-head">
@@ -412,7 +456,7 @@ def render_flagship(lang: str, heading_tag: str = "h3") -> str:
           <p class="flagship-note">{escape(f['context'])}</p>
           <div class="meta-row">
             <span class="tag tag-accent">{escape(f['category_label'])}</span>
-            {tags}
+            {tech}
           </div>
           <div class="flagship-actions">
             <a class="btn btn-primary" href="{f['release_url']}" rel="noopener">{escape(f['cta_release'])}</a>
@@ -429,6 +473,7 @@ def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
     rows = []
     for idx, p in enumerate(CONTENT[lang]["projects"], start=1):
         color = CUBE_COLORS[(idx - 1) % len(CUBE_COLORS)]
+        tech = render_tech_icons(p["name"])
         links = "".join(
             f'<a href="{url}" rel="noopener">{escape(label)} ↗</a>'
             for label, url in p["links"]
@@ -436,13 +481,12 @@ def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
         rows.append(f"""        <li class="dossier-row" data-category="{p['category']}">
           <div class="dossier-id">
             <span class="cube-mark" style="--mark-color:{color}" aria-hidden="true"></span>
-            <span>{idx:02d}</span>
           </div>
           <div class="dossier-main">
             <{heading_tag}><a href="{p['url']}" rel="noopener">{escape(p['name'])}</a></{heading_tag}>
             <div class="dossier-meta">
               <span class="tag">{escape(p['category_label'])}</span>
-              <span>{escape(p['stack'])}</span>
+              {tech}
             </div>
           </div>
           <div class="dossier-body">
@@ -451,14 +495,13 @@ def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
           </div>
           <div class="dossier-links">{links}</div>
         </li>""")
-    return '<ol class="dossier-list">\n' + "\n".join(rows) + "\n      </ol>"
+    return '<ul class="dossier-list">\n' + "\n".join(rows) + "\n      </ul>"
 
 
 def build_home(lang: str) -> str:
     c = CONTENT[lang]
     h = c["hero"]
     s = c["sections"]
-    kicker = "Индекс · приложения и исследования" if lang == "ru" else "Index · apps & research"
     return f"""{render_head(lang, "home")}
 <body>
 {render_header(lang, "home")}
@@ -469,16 +512,6 @@ def build_home(lang: str) -> str:
           <img class="hero-skyline" src="assets/skyline-lines.png?v={ASSET_V}" alt="" width="584" height="336" decoding="async">
           <canvas class="hero-cubes-canvas" data-cubes-canvas aria-hidden="true"></canvas>
           <div class="hero-content">
-            <p class="hero-kicker">
-              <span class="kicker-cubes" aria-hidden="true">
-                <i style="background:var(--cube-cyan)"></i>
-                <i style="background:var(--cube-violet)"></i>
-                <i style="background:var(--cube-lime)"></i>
-                <i style="background:var(--cube-amber)"></i>
-                <i style="background:var(--cube-magenta)"></i>
-              </span>
-              <span>{escape(kicker)}</span>
-            </p>
             <h1>d1d2dopamine</h1>
             <p class="hero-lead">{escape(h['lead'])}</p>
             <p class="hero-note">{escape(h['note'])}</p>

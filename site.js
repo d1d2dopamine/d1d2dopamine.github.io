@@ -4,7 +4,7 @@
   const root = document.documentElement;
   const ATMO_KEY = 'd1d2-atmosphere';
 
-  // 1. Atmosphere switch (Blueprint <-> Night)
+  // 1. Atmosphere switch (Sky Clouds <-> Night)
   const atmoBtn = document.querySelector('[data-atmo-toggle]');
   const syncAtmoBtn = () => {
     if (!atmoBtn) return;
@@ -12,14 +12,14 @@
     atmoBtn.setAttribute('aria-pressed', String(isNight));
     const label = atmoBtn.querySelector('[data-atmo-label]');
     if (label) {
-      label.textContent = isNight ? atmoBtn.dataset.labelNight : atmoBtn.dataset.labelBlueprint;
+      label.textContent = isNight ? atmoBtn.dataset.labelNight : atmoBtn.dataset.labelSky;
     }
   };
   syncAtmoBtn();
 
   if (atmoBtn) {
     atmoBtn.addEventListener('click', () => {
-      const next = root.dataset.atmosphere === 'night' ? 'blueprint' : 'night';
+      const next = root.dataset.atmosphere === 'night' ? 'sky' : 'night';
       root.dataset.atmosphere = next;
       try { localStorage.setItem(ATMO_KEY, next); } catch {}
       syncAtmoBtn();
@@ -48,7 +48,7 @@
     });
   }
 
-  // 3. Lightweight Chromatic Cubes Attention Canvas (Hero)
+  // 3. Diagonal falling Chromatic Cubes Canvas (top-right -> bottom-left, like Ikna's brand backdrop)
   const hero = document.querySelector('[data-hero-stage]');
   const canvas = document.querySelector('[data-cubes-canvas]');
   if (hero && canvas && canvas.getContext) {
@@ -56,7 +56,6 @@
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse = window.matchMedia('(pointer: coarse)').matches;
 
-    // Sampled directly from d1d2 avatar chromatic squares (softened for low-glare reading)
     const PALETTE = [
       [69, 217, 236],  // cyan
       [154, 116, 247], // violet
@@ -66,26 +65,35 @@
       [95, 167, 255],  // sky
     ];
 
-    // 24 resting cubes arranged in a stepped architectural roofline rhythm (normalized right-side zone)
-    const REST = [
-      [0.54, 0.62, 18, -0.18, 0], [0.57, 0.54, 14, 0.24, 1], [0.60, 0.68, 16, -0.09, 2],
-      [0.63, 0.44, 20, 0.14, 3],  [0.66, 0.50, 15, -0.26, 4], [0.68, 0.36, 17, 0.20, 5],
-      [0.71, 0.42, 14, -0.15, 0], [0.73, 0.58, 19, 0.11, 2],  [0.75, 0.30, 16, -0.22, 1],
-      [0.78, 0.36, 21, 0.17, 3],  [0.80, 0.48, 15, -0.12, 4], [0.82, 0.24, 17, 0.26, 5],
-      [0.84, 0.34, 14, -0.20, 0], [0.86, 0.44, 18, 0.13, 2],  [0.88, 0.20, 20, -0.16, 1],
-      [0.90, 0.30, 16, 0.21, 3],  [0.92, 0.42, 15, -0.10, 4], [0.94, 0.26, 17, 0.15, 5],
-      [0.64, 0.26, 13, 0.28, 2],  [0.72, 0.22, 14, -0.24, 3], [0.77, 0.18, 13, 0.19, 4],
-      [0.85, 0.14, 15, -0.14, 0], [0.91, 0.16, 13, 0.22, 2],  [0.96, 0.36, 14, -0.18, 1],
-    ];
+    const COUNT = 52;
+    const cubes = [];
+    // Deterministic pseudo-random so first frame is always balanced
+    let seed = 1337;
+    const rand = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
 
-    const cubes = REST.map(([nx, ny, size, rot, ci], idx) => ({
-      nx, ny, size, baseRot: rot, ci,
-      hx: 0, hy: 0, x: 0, y: 0, vx: 0, vy: 0, rot, vrot: 0,
-      seed: (idx * 1.618) % 1,
-    }));
+    for (let i = 0; i < COUNT; i++) {
+      const layer = rand(); // 0 = far/small/slow, 1 = near/larger/faster
+      cubes.push({
+        rx: rand(),
+        ry: rand(),
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0,
+        size: 9 + layer * 15,
+        speed: 0.28 + layer * 0.52,
+        rot: (rand() - 0.5) * 0.9,
+        rotSpeed: (rand() - 0.5) * 0.008,
+        ci: i % PALETTE.length,
+        alphaScale: 0.55 + layer * 0.45,
+      });
+    }
 
-    let cw = 0, ch = 0, dpr = 1, raf = 0, inView = true, energy = 0;
-    let lastPx = 0, lastPy = 0, hasPointer = false;
+    let cw = 0, ch = 0, dpr = 1, raf = 0, inView = true, lastTime = 0;
+    let ptrX = -999, ptrY = -999, ptrActive = false;
 
     const layout = () => {
       const rect = hero.getBoundingClientRect();
@@ -95,11 +103,9 @@
       canvas.width = Math.round(cw * dpr);
       canvas.height = Math.round(ch * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const compact = cw < 720;
       for (const c of cubes) {
-        c.hx = (compact ? 0.12 + (c.nx - 0.5) * 1.72 : c.nx) * cw;
-        c.hy = (compact ? 0.77 + (c.ny - 0.14) * 0.28 : c.ny) * ch;
-        if (!hasPointer) { c.x = c.hx; c.y = c.hy; }
+        c.x = c.rx * (cw + 120) - 40;
+        c.y = c.ry * (ch + 120) - 60;
       }
       draw();
     };
@@ -107,16 +113,28 @@
     const draw = () => {
       ctx.clearRect(0, 0, cw, ch);
       const isNight = root.dataset.atmosphere === 'night';
-      const fillAlpha = isNight ? 0.24 : 0.28;
-      const strokeAlpha = isNight ? 0.42 : 0.48;
+      const baseFill = isNight ? 0.25 : 0.30;
+      const baseStroke = isNight ? 0.44 : 0.52;
+      const compact = cw < 720;
+
       for (const c of cubes) {
+        // Keep left reading area calm & legible; full chromatic brightness on right/skyline side
+        let zoneFade = 1;
+        if (compact) {
+          zoneFade = Math.max(0.14, Math.min(1, (c.y - ch * 0.56) / (ch * 0.24)));
+        } else {
+          zoneFade = Math.max(0.12, Math.min(1, (c.x - cw * 0.34) / (cw * 0.28)));
+        }
+        const aFill = baseFill * c.alphaScale * zoneFade;
+        const aStroke = baseStroke * c.alphaScale * zoneFade;
         const [r, g, b] = PALETTE[c.ci];
+
         ctx.save();
         ctx.translate(c.x, c.y);
         ctx.rotate(c.rot);
         const half = c.size * 0.5;
-        ctx.fillStyle = `rgba(${r},${g},${b},${fillAlpha})`;
-        ctx.strokeStyle = `rgba(${r},${g},${b},${strokeAlpha})`;
+        ctx.fillStyle = `rgba(${r},${g},${b},${aFill.toFixed(3)})`;
+        ctx.strokeStyle = `rgba(${r},${g},${b},${aStroke.toFixed(3)})`;
         ctx.lineWidth = 1;
         ctx.fillRect(-half, -half, c.size, c.size);
         ctx.strokeRect(-half + 0.5, -half + 0.5, c.size - 1, c.size - 1);
@@ -124,62 +142,70 @@
       }
     };
 
-    const step = () => {
+    const tick = now => {
       raf = 0;
-      if (!inView || document.hidden) return;
-      let moving = false;
+      if (!inView || document.hidden || reduced) return;
+      const dt = lastTime ? Math.min(2.2, (now - lastTime) / 16.667) : 1;
+      lastTime = now;
+
+      const pad = 42;
       for (const c of cubes) {
-        const dx = c.hx - c.x;
-        const dy = c.hy - c.y;
-        const dr = c.baseRot - c.rot;
-        c.vx = (c.vx + dx * 0.065) * 0.82;
-        c.vy = (c.vy + dy * 0.065) * 0.82;
-        c.vrot = (c.vrot + dr * 0.07) * 0.80;
-        c.x += c.vx;
-        c.y += c.vy;
-        c.rot += c.vrot;
-        if (Math.abs(dx) + Math.abs(dy) + Math.abs(c.vx) + Math.abs(c.vy) > 0.18 || Math.abs(dr) > 0.004) {
-          moving = true;
-        } else {
-          c.x = c.hx; c.y = c.hy; c.rot = c.baseRot;
-          c.vx = 0; c.vy = 0; c.vrot = 0;
+        // Diagonal fall: top-right -> bottom-left
+        c.x -= c.speed * 0.86 * dt;
+        c.y += c.speed * 0.64 * dt;
+        c.rot += c.rotSpeed * dt;
+
+        // Gentle pointer breeze deflection
+        if (ptrActive && !coarse) {
+          const dx = c.x - ptrX;
+          const dy = c.y - ptrY;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130 && dist > 1) {
+            const push = (1 - dist / 130) * 0.55;
+            c.vx += (dx / dist) * push;
+            c.vy += (dy / dist) * push;
+          }
+        }
+        c.x += c.vx * dt;
+        c.y += c.vy * dt;
+        c.vx *= 0.92;
+        c.vy *= 0.92;
+
+        // Wrap cleanly back to top / right edge
+        if (c.x < -pad || c.y > ch + pad) {
+          if (Math.random() < 0.58) {
+            c.x = cw * (0.28 + Math.random() * 0.78);
+            c.y = -pad - Math.random() * 24;
+          } else {
+            c.x = cw + pad + Math.random() * 24;
+            c.y = Math.random() * ch * 0.78;
+          }
+          c.vx = 0;
+          c.vy = 0;
         }
       }
       draw();
-      if (moving) raf = requestAnimationFrame(step);
+      raf = requestAnimationFrame(tick);
     };
 
-    const kick = () => {
-      if (!raf && inView && !document.hidden && !reduced && !coarse) {
-        raf = requestAnimationFrame(step);
+    const start = () => {
+      if (!raf && inView && !document.hidden && !reduced) {
+        lastTime = 0;
+        raf = requestAnimationFrame(tick);
       }
     };
 
-    // Defer first layout/draw until after first paint
     requestAnimationFrame(() => {
       layout();
+      if (!reduced) start();
       if (!reduced && !coarse) {
         hero.addEventListener('pointermove', e => {
           const rect = hero.getBoundingClientRect();
-          const px = e.clientX - rect.left;
-          const py = e.clientY - rect.top;
-          if (!hasPointer) { lastPx = px; lastPy = py; hasPointer = true; return; }
-          const dvx = px - lastPx;
-          const dvy = py - lastPy;
-          lastPx = px; lastPy = py;
-          const speed = Math.min(28, Math.hypot(dvx, dvy));
-          if (speed < 0.8) return;
-          energy = Math.min(1, speed / 22);
-          for (const c of cubes) {
-            const dist = Math.hypot(c.x - px, c.y - py);
-            const influence = Math.max(0.18, 1 - dist / (cw * 0.65));
-            const angle = (c.seed * 6.283) + energy * 1.4;
-            c.vx += (dvx * 0.08 + Math.cos(angle) * speed * 0.14) * influence;
-            c.vy += (dvy * 0.08 + Math.sin(angle) * speed * 0.14) * influence;
-            c.vrot += (c.seed - 0.5) * speed * 0.012 * influence;
-          }
-          kick();
+          ptrX = e.clientX - rect.left;
+          ptrY = e.clientY - rect.top;
+          ptrActive = true;
         }, { passive: true });
+        hero.addEventListener('pointerleave', () => { ptrActive = false; }, { passive: true });
       }
     });
 
@@ -187,11 +213,13 @@
     window.addEventListener('d1d2:atmosphere', draw);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; }
+      else start();
     });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(entries => {
         inView = entries[0]?.isIntersecting ?? true;
         if (!inView && raf) { cancelAnimationFrame(raf); raf = 0; }
+        else start();
       }, { threshold: 0.05 }).observe(hero);
     }
   }

@@ -107,22 +107,24 @@ body {
   color: var(--text);
   background-color: var(--bg);
   background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    radial-gradient(ellipse 85% 60% at 85% 0%, rgba(16, 76, 178, 0.42), transparent 65%);
-  background-size: 48px 48px, 48px 48px, 100% 100%;
-  background-position: top left;
+    linear-gradient(180deg, rgba(2, 24, 66, 0.34) 0%, rgba(2, 20, 56, 0.42) 55%, rgba(2, 16, 46, 0.52) 100%),
+    url("assets/clouds-zenith.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 html[data-atmosphere="night"] body {
   background-image:
-    linear-gradient(180deg, rgba(6, 17, 36, 0.56) 0%, rgba(5, 14, 30, 0.72) 55%, rgba(4, 10, 22, 0.84) 100%),
+    linear-gradient(180deg, rgba(6, 17, 36, 0.28) 0%, rgba(5, 14, 30, 0.40) 55%, rgba(4, 10, 22, 0.54) 100%),
     url("assets/background-night.jpg");
   background-size: cover, cover;
-  background-position: center, center top;
+  background-position: center, center;
   background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
 }
 
 img {
@@ -631,8 +633,8 @@ html[data-atmosphere="night"] .hero-skyline {
 
 .dossier-row {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1.05fr) minmax(0, 1.35fr) auto;
-  gap: 18px 24px;
+  grid-template-columns: 32px minmax(0, 1.05fr) minmax(0, 1.35fr) auto;
+  gap: 18px 22px;
   align-items: start;
   padding: 22px 14px;
   border-bottom: 1px solid var(--border);
@@ -649,15 +651,69 @@ html[data-atmosphere="night"] .hero-skyline {
   border-bottom-color: var(--border-strong);
 }
 
-/* Two-square offset chromatic drafting mark (snaps into registration on hover/focus) */
+/* Two-square offset chromatic mark (folds into one aligned square on hover/focus) */
 .dossier-id {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-top: 3px;
+  padding-top: 4px;
+}
+
+.tech-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface-tint);
+  transition: border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
+}
+
+.tech-icon:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-elevated);
+  transform: translateY(-1px);
+}
+
+.tech-icon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.tech-icon::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 7px);
+  transform: translateX(-50%) translateY(-3px);
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-deep);
+  color: var(--text);
   font-family: var(--mono);
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 30;
+  transition: opacity 130ms ease, transform 130ms ease;
+}
+
+.tech-icon:hover::after,
+.tech-icon:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .cube-mark {
@@ -963,8 +1019,8 @@ html[data-atmosphere="night"] .hero-skyline {
 
 @media (max-width: 900px) {
   .dossier-row {
-    grid-template-columns: 64px minmax(0, 1fr);
-    gap: 10px 16px;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px 14px;
   }
 
   .dossier-body,
