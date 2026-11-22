@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v2"
+ASSET_V = "v3"
 
 GITHUB_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.12c.98 0 1.95.13 2.86.38 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.4-2.7 5.38-5.28 5.67.42.36.78 1.06.78 2.14v3.27c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>'
 X_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.73L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.25-8.29L2.97 2h6.4l4.42 5.84L18.9 2Zm-1.09 17.84h1.73L8.43 4.05H6.58l11.23 15.79Z"/></svg>'
@@ -314,7 +314,7 @@ def render_head(lang: str, page: str) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="d1d2dopamine">
-  <meta name="theme-color" content="#0A111A">
+  <meta name="theme-color" content="#041623">
   <title>{escape(title)}</title>
   <meta name="description" content="{escape(desc)}">
   <link rel="canonical" href="{canon}">
@@ -335,10 +335,10 @@ def render_head(lang: str, page: str) -> str:
   <meta name="twitter:title" content="{escape(title)}">
   <meta name="twitter:description" content="{escape(desc)}">
   <meta name="twitter:image" content="{ORIGIN}/assets/og-image.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v={ASSET_V}">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v={ASSET_V}">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v={ASSET_V}">
+  <link rel="manifest" href="site.webmanifest?v={ASSET_V}">
   <link rel="preload" href="assets/fonts/geologica-regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/geologica-semibold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css?v={ASSET_V}">
@@ -355,13 +355,11 @@ def render_header(lang: str, page: str) -> str:
         nav_links.append(f'<a href="{href}"{current}>{escape(c["nav"][key])}</a>')
     other_href = ROUTES[other][page]
     return f"""  <a class="skip-link" href="#content">{escape(c['skip'])}</a>
-  <div class="sky-backdrop" aria-hidden="true"></div>
   <header class="site-header">
     <div class="container header-inner">
       <div class="header-left">
-        <a class="brand" href="{ROUTES[lang]['home']}">
-          <img class="brand-mark" src="assets/favicon.png" alt="" width="24" height="24">
-          <span>d1d2dopamine</span>
+        <a class="brand" href="{ROUTES[lang]['home']}" aria-label="d1d2dopamine">
+          <img class="brand-mark" src="assets/avatar-d1d2.png?v={ASSET_V}" alt="" width="34" height="34">
         </a>
         <nav class="primary-nav" aria-label="{escape(c['nav_label'])}">
           {''.join(nav_links)}
@@ -379,17 +377,8 @@ def render_header(lang: str, page: str) -> str:
 
 def render_footer(lang: str, page: str) -> str:
     c = CONTENT[lang]
-    other = c["other_lang"]
-    other_href = ROUTES[other][page]
     return f"""  <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-links">
-        <span>d1d2dopamine</span>
-        <a href="https://github.com/d1d2dopamine" rel="me noopener">GitHub</a>
-        <a href="https://x.com/d1d2dopamine" rel="me noopener">X</a>
-        <a href="mailto:d1d2dopamine@gmail.com">{escape(c['email_label'])}</a>
-        <a href="{other_href}" hreflang="{other}">{c['other_label']}</a>
-      </div>
       <span class="footer-note">{escape(c['footer_note'])}</span>
     </div>
   </footer>
@@ -561,17 +550,13 @@ def build_about(lang: str) -> str:
         </article>
         <aside class="about-aside">
           <div class="aside-card">
-            <h2 class="aside-title">{escape(ap['aside_focus_title'])}</h2>
-            <ul class="aside-list">
-            {focus_items}
-            </ul>
-          </div>
-          <div class="aside-card">
-            <h2 class="aside-title">{escape(ap['aside_links_title'])}</h2>
-            <div class="aside-links">
-              <a href="https://github.com/d1d2dopamine" rel="me noopener">GitHub <span>@d1d2dopamine</span></a>
-              <a href="https://x.com/d1d2dopamine" rel="me noopener">X <span>@d1d2dopamine</span></a>
-              <a href="mailto:d1d2dopamine@gmail.com">{escape(c['email_label'])} <span>gmail</span></a>
+            <div class="profile-banner" aria-hidden="true"></div>
+            <div class="profile-body">
+              <img class="profile-avatar" src="assets/avatar-d1d2.png?v={ASSET_V}" alt="d1d2" width="56" height="56">
+              <h2 class="aside-title">{escape(ap['aside_focus_title'])}</h2>
+              <ul class="aside-list">
+              {focus_items}
+              </ul>
             </div>
           </div>
         </aside>
@@ -588,17 +573,16 @@ def build_404() -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="d1d2dopamine">
-  <meta name="theme-color" content="#0A111A">
+  <meta name="theme-color" content="#041623">
   <meta name="robots" content="noindex">
   <title>Page not found — d1d2dopamine</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png?v={ASSET_V}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v={ASSET_V}">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v={ASSET_V}">
+  <link rel="manifest" href="/site.webmanifest?v={ASSET_V}">
   <link rel="stylesheet" href="/styles.css?v={ASSET_V}">
 </head>
 <body>
-  <div class="sky-backdrop" aria-hidden="true"></div>
   <main id="content">
     <div class="container">
       <section class="error-card">

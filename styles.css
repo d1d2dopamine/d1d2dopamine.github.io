@@ -29,20 +29,19 @@
 
 :root {
   color-scheme: dark;
-  --bg: #0A111A;
-  --bg-deep: #070D14;
-  --surface: #101A27;
-  --surface-elevated: #142131;
-  --surface-glass: rgba(10, 17, 26, 0.72);
-  --border: rgba(189, 202, 225, 0.14);
-  --border-strong: rgba(189, 202, 225, 0.28);
+  --bg: #041623;
+  --bg-deep: rgba(4, 16, 28, 0.86);
+  --surface: rgba(10, 21, 35, 0.78);
+  --surface-elevated: rgba(15, 29, 48, 0.84);
+  --border: rgba(189, 202, 225, 0.17);
+  --border-strong: rgba(189, 202, 225, 0.32);
   --text: #EDF2F8;
-  --text-soft: rgba(237, 242, 248, 0.86);
-  --muted: #93A4BC;
+  --text-soft: rgba(237, 242, 248, 0.88);
+  --muted: #A3B4CA;
   --accent: #61A9AF;
   --accent-bright: #7BC2C8;
-  --accent-soft: rgba(97, 169, 175, 0.13);
-  --accent-border: rgba(97, 169, 175, 0.42);
+  --accent-soft: rgba(97, 169, 175, 0.15);
+  --accent-border: rgba(97, 169, 175, 0.46);
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -69,28 +68,19 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: transparent;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(4, 20, 33, 0.36) 0%, rgba(4, 20, 33, 0.54) 55%, rgba(3, 14, 24, 0.72) 100%),
+    url("assets/background-night.jpg");
+  background-size: cover, cover;
+  background-position: center, center 42%;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.68;
   -webkit-font-smoothing: antialiased;
-  position: relative;
-}
-
-/* Atmospheric night-city skyline confined to the top backdrop so prose stays crisp */
-.sky-backdrop {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: min(70vh, 640px);
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(180deg, rgba(10, 17, 26, 0.42) 0%, rgba(10, 17, 26, 0.76) 58%, var(--bg) 100%),
-    url("assets/background-night.jpg");
-  background-size: cover;
-  background-position: center 36%;
-  background-repeat: no-repeat;
 }
 
 a {
@@ -177,23 +167,21 @@ a:hover {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text);
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: -0.015em;
+  justify-content: center;
+  border-radius: 9px;
   text-decoration: none;
-  white-space: nowrap;
+  flex-shrink: 0;
+  transition: transform 140ms ease;
 }
 
 .brand:hover {
-  color: var(--text);
+  transform: scale(1.04);
 }
 
 .brand-mark {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   border: 1px solid var(--border-strong);
   object-fit: cover;
   display: block;
@@ -433,6 +421,8 @@ main {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .flagship-head {
@@ -575,6 +565,8 @@ main {
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: border-color 160ms ease, background-color 160ms ease;
 }
 
@@ -679,6 +671,8 @@ main {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .essay-group + .essay-group {
@@ -714,10 +708,38 @@ main {
 }
 
 .aside-card {
-  padding: 20px 22px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.profile-banner {
+  position: relative;
+  height: 118px;
+  background-color: #042C70;
+  background-image: url("assets/github-banner.png");
+  background-size: cover;
+  background-position: right bottom;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-body {
+  padding: 0 22px 22px;
+}
+
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  margin-top: -28px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  border: 2px solid #0A1523;
+  display: block;
+  position: relative;
+  z-index: 1;
 }
 
 .aside-title {
@@ -738,44 +760,20 @@ main {
   font-size: 14px;
 }
 
-.aside-links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.aside-links a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  text-decoration: none;
-  color: var(--text-soft);
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: rgba(7, 13, 20, 0.45);
-}
-
-.aside-links a:hover {
-  border-color: var(--accent-border);
-  background: var(--accent-soft);
-  color: var(--text);
-}
-
-.aside-links span {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--muted);
-}
-
 /* Home About Teaser */
 .home-about {
   margin-top: 28px;
   padding: 26px 28px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: var(--surface);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(90deg, rgba(10, 21, 35, 0.94) 0%, rgba(10, 21, 35, 0.84) 55%, rgba(4, 44, 112, 0.42) 100%),
+    url("assets/github-banner.png");
+  background-size: cover, cover;
+  background-position: center, right bottom;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -826,34 +824,18 @@ main {
 .site-footer {
   border-top: 1px solid var(--border);
   background: var(--bg-deep);
-  padding: 28px 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 20px 0;
   margin-top: auto;
 }
 
 .footer-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px 24px;
-  font-size: 14px;
+  justify-content: center;
+  font-size: 13px;
   color: var(--muted);
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.footer-links a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.footer-links a:hover {
-  color: var(--text);
 }
 
 .footer-note {

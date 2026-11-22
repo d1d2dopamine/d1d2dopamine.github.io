@@ -7,9 +7,10 @@
 
 ## Imagery
 
-- `assets/background-night.jpg`: Author-supplied night-city photograph used as the atmospheric top backdrop.
+- `assets/background-night.jpg`: Author-supplied night-city photograph used as the fixed site background.
+- `assets/avatar-d1d2.png`, `favicon.ico`, `assets/favicon.png`, `assets/apple-touch-icon.png`, `assets/icon-*.png`: Author's `d1d2` GitHub profile logo.
+- `assets/github-banner.png`: Author's GitHub profile architectural skyline banner.
 - `assets/ikna-banner.png` and `assets/ikna-icon.png`: Official brand artwork for [ikna](https://github.com/d1d2dopamine/ikna).
-- Favicons and application icons (`favicon.ico`, `assets/favicon.png`, `assets/apple-touch-icon.png`, `assets/icon-*.png`) are derived from `assets/site-icon-source.jpg`.
 
 ## Code
 
