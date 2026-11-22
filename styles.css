@@ -577,6 +577,8 @@ main {
 }
 
 .dossier-row {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 38px minmax(0, 1.05fr) minmax(0, 1.35fr) 152px;
   gap: 20px 24px;
@@ -586,6 +588,33 @@ main {
   background: var(--surface-row);
   box-shadow: 0 10px 26px rgba(2, 8, 22, 0.34);
   transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.dossier-row > *:not(.row-char) {
+  position: relative;
+  z-index: 2;
+}
+
+.row-char {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  height: 112%;
+  width: auto;
+  max-width: 44%;
+  object-fit: contain;
+  object-position: bottom right;
+  opacity: 0.24;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  transition: opacity 220ms ease, transform 260ms ease;
+}
+
+.dossier-row:hover .row-char,
+.dossier-row:focus-within .row-char {
+  opacity: 0.38;
+  transform: scale(1.03);
 }
 
 .dossier-row[hidden] {
@@ -836,6 +865,28 @@ main {
   gap: 24px;
 }
 
+.home-about > *:not(.about-char) {
+  position: relative;
+  z-index: 2;
+}
+
+.about-char {
+  position: absolute;
+  right: 180px;
+  bottom: 0;
+  height: 118%;
+  width: auto;
+  opacity: 0.26;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  transition: opacity 220ms ease;
+}
+
+.home-about:hover .about-char {
+  opacity: 0.38;
+}
+
 .home-about p {
   margin: 0;
   color: var(--text-soft);
@@ -904,7 +955,33 @@ main {
 }
 
 .profile-body {
-  padding: 0 22px 22px;
+  position: relative;
+  padding: 0 22px 26px;
+}
+
+.profile-body > *:not(.focus-char) {
+  position: relative;
+  z-index: 2;
+}
+
+.focus-char {
+  position: absolute;
+  right: -8px;
+  bottom: 0;
+  height: 92%;
+  width: auto;
+  max-width: 72%;
+  object-fit: contain;
+  object-position: bottom right;
+  opacity: 0.34;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  transition: opacity 220ms ease;
+}
+
+.aside-card:hover .focus-char {
+  opacity: 0.46;
 }
 
 .profile-avatar {

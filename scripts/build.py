@@ -6,7 +6,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v9"
+ASSET_V = "v10"
+PROJECT_CHAR = {
+    "MVS Analyzer": "assets/chars/char-elliot.webp",
+    "Allostatic Sprint Hypothesis": "assets/chars/char-mads.webp",
+    "vespian": "assets/chars/char-jesse.webp",
+    "trial3lib": "assets/chars/char-tyrell.webp",
+    "Gitctap": "assets/chars/char-teotfw.webp",
+}
 CUBE_COLORS = [
     "var(--cube-cyan)",
     "var(--cube-violet)",
@@ -470,7 +477,14 @@ def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
             f'<a href="{url}" rel="noopener">{escape(label)} ↗</a>'
             for label, url in p["links"]
         )
+        char_src = PROJECT_CHAR.get(p["name"])
+        char_img = (
+            f'<img class="row-char" src="{char_src}?v={ASSET_V}" alt="" loading="lazy" decoding="async">'
+            if char_src
+            else ""
+        )
         rows.append(f"""        <li class="dossier-row" data-category="{p['category']}">
+          {char_img}
           <div class="dossier-id">
             <span class="cube-mark" style="--mark-color:{color}" aria-hidden="true"></span>
           </div>
@@ -533,6 +547,7 @@ def build_home(lang: str) -> str:
         </div>
 {render_project_cards(lang, heading_tag="h3")}
         <div class="home-about">
+          <img class="about-char" src="assets/chars/char-hoodie.webp?v={ASSET_V}" alt="" loading="lazy" decoding="async">
           <p>{escape(s['about_teaser'])}</p>
           <a class="btn" href="{ROUTES[lang]['about']}">{escape(s['about_cta'])}</a>
         </div>
@@ -609,6 +624,7 @@ def build_about(lang: str) -> str:
           <div class="aside-card">
             <div class="profile-banner" aria-hidden="true"></div>
             <div class="profile-body">
+              <img class="focus-char" src="assets/chars/focus-lee.webp?v={ASSET_V}" alt="" loading="lazy" decoding="async">
               <img class="profile-avatar" src="assets/avatar-d1d2.png?v={ASSET_V}" alt="d1d2" width="56" height="56">
               <h2 class="aside-title">{escape(ap['aside_focus_title'])}</h2>
               <ul class="aside-list">
