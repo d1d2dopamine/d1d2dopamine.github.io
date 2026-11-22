@@ -6,7 +6,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v3"
+ASSET_V = "v4"
+CUBE_COLORS = [
+    "var(--cube-cyan)",
+    "var(--cube-violet)",
+    "var(--cube-lime)",
+    "var(--cube-amber)",
+    "var(--cube-magenta)",
+]
 
 GITHUB_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.12c.98 0 1.95.13 2.86.38 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.4-2.7 5.38-5.28 5.67.42.36.78 1.06.78 2.14v3.27c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>'
 X_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.73L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.25-8.29L2.97 2h6.4l4.42 5.84L18.9 2Zm-1.09 17.84h1.73L8.43 4.05H6.58l11.23 15.79Z"/></svg>'
@@ -314,7 +321,7 @@ def render_head(lang: str, page: str) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="d1d2dopamine">
-  <meta name="theme-color" content="#041623">
+  <meta name="theme-color" content="#002B73">
   <title>{escape(title)}</title>
   <meta name="description" content="{escape(desc)}">
   <link rel="canonical" href="{canon}">
@@ -342,6 +349,7 @@ def render_head(lang: str, page: str) -> str:
   <link rel="preload" href="assets/fonts/geologica-regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/geologica-semibold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css?v={ASSET_V}">
+  <script>(function(){{try{{if(localStorage.getItem('d1d2-atmosphere')==='night')document.documentElement.dataset.atmosphere='night';}}catch(e){{}}}})();</script>
 </head>"""
 
 
@@ -354,6 +362,9 @@ def render_header(lang: str, page: str) -> str:
         current = ' aria-current="page"' if key == page else ""
         nav_links.append(f'<a href="{href}"{current}>{escape(c["nav"][key])}</a>')
     other_href = ROUTES[other][page]
+    atmo_bp = "Чертёж" if lang == "ru" else "Blueprint"
+    atmo_night = "Ночь" if lang == "ru" else "Night"
+    atmo_aria = "Переключить атмосферу: Чертёж или Ночь" if lang == "ru" else "Switch atmosphere between Blueprint and Night"
     return f"""  <a class="skip-link" href="#content">{escape(c['skip'])}</a>
   <header class="site-header">
     <div class="container header-inner">
@@ -366,6 +377,10 @@ def render_header(lang: str, page: str) -> str:
         </nav>
       </div>
       <div class="header-right">
+        <button type="button" class="atmo-toggle" data-atmo-toggle data-label-blueprint="{atmo_bp}" data-label-night="{atmo_night}" aria-pressed="false" aria-label="{atmo_aria}">
+          <span class="atmo-swatch" aria-hidden="true"></span>
+          <span data-atmo-label>{atmo_bp}</span>
+        </button>
         <a class="icon-link" href="https://github.com/d1d2dopamine" rel="me noopener" aria-label="GitHub" title="GitHub">{GITHUB_SVG}</a>
         <a class="icon-link" href="https://x.com/d1d2dopamine" rel="me noopener" aria-label="X" title="X">{X_SVG}</a>
         <a class="icon-link" href="mailto:d1d2dopamine@gmail.com" aria-label="{escape(c['email_label'])}" title="{escape(c['email_label'])}">{MAIL_SVG}</a>
@@ -411,43 +426,67 @@ def render_flagship(lang: str, heading_tag: str = "h3") -> str:
 
 
 def render_project_cards(lang: str, heading_tag: str = "h3") -> str:
-    cards = []
-    for p in CONTENT[lang]["projects"]:
+    rows = []
+    for idx, p in enumerate(CONTENT[lang]["projects"], start=1):
+        color = CUBE_COLORS[(idx - 1) % len(CUBE_COLORS)]
         links = "".join(
-            f'<a href="{url}" rel="noopener">{escape(label)}</a>'
+            f'<a href="{url}" rel="noopener">{escape(label)} ↗</a>'
             for label, url in p["links"]
         )
-        cards.append(f"""        <article class="project-card" data-category="{p['category']}">
-          <div class="card-meta">
-            <span class="tag">{escape(p['category_label'])}</span>
-            <span class="card-stack">{escape(p['stack'])}</span>
+        rows.append(f"""        <li class="dossier-row" data-category="{p['category']}">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:{color}" aria-hidden="true"></span>
+            <span>{idx:02d}</span>
           </div>
-          <{heading_tag}><a href="{p['url']}" rel="noopener">{escape(p['name'])}</a></{heading_tag}>
-          <p class="project-desc">{escape(p['desc'])}</p>
-          <p class="project-context">{escape(p['context'])}</p>
-          <div class="card-links">{links}</div>
-        </article>""")
-    return '<div class="project-grid">\n' + "\n".join(cards) + "\n      </div>"
+          <div class="dossier-main">
+            <{heading_tag}><a href="{p['url']}" rel="noopener">{escape(p['name'])}</a></{heading_tag}>
+            <div class="dossier-meta">
+              <span class="tag">{escape(p['category_label'])}</span>
+              <span>{escape(p['stack'])}</span>
+            </div>
+          </div>
+          <div class="dossier-body">
+            <p>{escape(p['desc'])}</p>
+            <p class="dossier-context">{escape(p['context'])}</p>
+          </div>
+          <div class="dossier-links">{links}</div>
+        </li>""")
+    return '<ol class="dossier-list">\n' + "\n".join(rows) + "\n      </ol>"
 
 
 def build_home(lang: str) -> str:
     c = CONTENT[lang]
     h = c["hero"]
     s = c["sections"]
+    kicker = "Индекс · приложения и исследования" if lang == "ru" else "Index · apps & research"
     return f"""{render_head(lang, "home")}
 <body>
 {render_header(lang, "home")}
   <main id="content">
-    <section class="hero">
+    <section class="hero-wrap">
       <div class="container">
-        <div class="hero-inner">
-          <h1>d1d2dopamine</h1>
-          <p class="hero-lead">{escape(h['lead'])}</p>
-          <p class="hero-note">{escape(h['note'])}</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="{c['flagship']['release_url']}" rel="noopener">{escape(h['cta_primary'])}</a>
-            <a class="btn" href="{ROUTES[lang]['projects']}">{escape(h['cta_secondary'])}</a>
-            <a class="btn btn-ghost" href="{ROUTES[lang]['about']}">{escape(h['cta_about'])}</a>
+        <div class="hero-stage" data-hero-stage>
+          <img class="hero-skyline" src="assets/skyline-lines.png?v={ASSET_V}" alt="" width="584" height="336" decoding="async">
+          <canvas class="hero-cubes-canvas" data-cubes-canvas aria-hidden="true"></canvas>
+          <div class="hero-content">
+            <p class="hero-kicker">
+              <span class="kicker-cubes" aria-hidden="true">
+                <i style="background:var(--cube-cyan)"></i>
+                <i style="background:var(--cube-violet)"></i>
+                <i style="background:var(--cube-lime)"></i>
+                <i style="background:var(--cube-amber)"></i>
+                <i style="background:var(--cube-magenta)"></i>
+              </span>
+              <span>{escape(kicker)}</span>
+            </p>
+            <h1>d1d2dopamine</h1>
+            <p class="hero-lead">{escape(h['lead'])}</p>
+            <p class="hero-note">{escape(h['note'])}</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="{c['flagship']['release_url']}" rel="noopener">{escape(h['cta_primary'])}</a>
+              <a class="btn" href="{ROUTES[lang]['projects']}">{escape(h['cta_secondary'])}</a>
+              <a class="btn btn-ghost" href="{ROUTES[lang]['about']}">{escape(h['cta_about'])}</a>
+            </div>
           </div>
         </div>
       </div>

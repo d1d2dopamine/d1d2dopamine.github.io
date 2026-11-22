@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="d1d2dopamine">
-  <meta name="theme-color" content="#041623">
+  <meta name="theme-color" content="#002B73">
   <title>Projects — d1d2dopamine</title>
   <meta name="description" content="Open-source apps, statistical tools, and attention research by d1d2dopamine.">
   <link rel="canonical" href="https://d1d2dopamine.is-a.dev/projects.html">
@@ -25,13 +25,14 @@
   <meta name="twitter:title" content="Projects — d1d2dopamine">
   <meta name="twitter:description" content="Open-source apps, statistical tools, and attention research by d1d2dopamine.">
   <meta name="twitter:image" content="https://d1d2dopamine.is-a.dev/assets/og-image.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v=v3">
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=v3">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=v3">
-  <link rel="manifest" href="site.webmanifest?v=v3">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v=v4">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=v4">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=v4">
+  <link rel="manifest" href="site.webmanifest?v=v4">
   <link rel="preload" href="assets/fonts/geologica-regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/geologica-semibold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=v3">
+  <link rel="stylesheet" href="styles.css?v=v4">
+  <script>(function(){try{if(localStorage.getItem('d1d2-atmosphere')==='night')document.documentElement.dataset.atmosphere='night';}catch(e){}})();</script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -39,13 +40,17 @@
     <div class="container header-inner">
       <div class="header-left">
         <a class="brand" href="index.html" aria-label="d1d2dopamine">
-          <img class="brand-mark" src="assets/avatar-d1d2.png?v=v3" alt="" width="34" height="34">
+          <img class="brand-mark" src="assets/avatar-d1d2.png?v=v4" alt="" width="34" height="34">
         </a>
         <nav class="primary-nav" aria-label="Primary navigation">
           <a href="index.html">Home</a><a href="projects.html" aria-current="page">Projects</a><a href="about.html">About</a>
         </nav>
       </div>
       <div class="header-right">
+        <button type="button" class="atmo-toggle" data-atmo-toggle data-label-blueprint="Blueprint" data-label-night="Night" aria-pressed="false" aria-label="Switch atmosphere between Blueprint and Night">
+          <span class="atmo-swatch" aria-hidden="true"></span>
+          <span data-atmo-label>Blueprint</span>
+        </button>
         <a class="icon-link" href="https://github.com/d1d2dopamine" rel="me noopener" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.12c.98 0 1.95.13 2.86.38 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.4-2.7 5.38-5.28 5.67.42.36.78 1.06.78 2.14v3.27c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg></a>
         <a class="icon-link" href="https://x.com/d1d2dopamine" rel="me noopener" aria-label="X" title="X"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.73L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.25-8.29L2.97 2h6.4l4.42 5.84L18.9 2Zm-1.09 17.84h1.73L8.43 4.05H6.58l11.23 15.79Z"/></svg></a>
         <a class="icon-link" href="mailto:d1d2dopamine@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 4h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm9 8.2L20.3 6H3.7L12 12.2Zm0 2.5L3 8v10h18V8l-9 6.7Z"/></svg></a>
@@ -94,61 +99,101 @@
 
     <section class="section">
       <div class="container">
-<div class="project-grid">
-        <article class="project-card" data-category="research">
-          <div class="card-meta">
-            <span class="tag">Research</span>
-            <span class="card-stack">Python · CLI / API</span>
+<ol class="dossier-list">
+        <li class="dossier-row" data-category="research">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:var(--cube-cyan)" aria-hidden="true"></span>
+            <span>01</span>
           </div>
-          <h2><a href="https://github.com/d1d2dopamine/MVS-analyzer" rel="noopener">MVS Analyzer</a></h2>
-          <p class="project-desc">Statistical analysis tool for repeated measurements. Compares summary variability metrics via simulation on your dataset, estimates statistical power and false-alarm rates, and saves run settings for reproducibility.</p>
-          <p class="project-context">I first test how a variability metric behaves in the target scenario before trusting it in an analysis.</p>
-          <div class="card-links"><a href="https://github.com/d1d2dopamine/MVS-analyzer" rel="noopener">GitHub</a></div>
-        </article>
-        <article class="project-card" data-category="research">
-          <div class="card-meta">
-            <span class="tag">Research</span>
-            <span class="card-stack">Open Datasets · Zenodo</span>
+          <div class="dossier-main">
+            <h2><a href="https://github.com/d1d2dopamine/MVS-analyzer" rel="noopener">MVS Analyzer</a></h2>
+            <div class="dossier-meta">
+              <span class="tag">Research</span>
+              <span>Python · CLI / API</span>
+            </div>
           </div>
-          <h2><a href="https://github.com/d1d2dopamine/allostatic-sprint-hypothesis" rel="noopener">Allostatic Sprint Hypothesis</a></h2>
-          <p class="project-desc">Empirical testing of the Allostatic Sprint hypothesis across open attention-task datasets. Preserves positive results, null results, and cases where method limitations prevent a conclusion.</p>
-          <p class="project-context">Null results stay in the repository so the analysis is never shaped to fit the hypothesis.</p>
-          <div class="card-links"><a href="https://github.com/d1d2dopamine/allostatic-sprint-hypothesis" rel="noopener">GitHub</a><a href="https://zenodo.org/records/21304761" rel="noopener">Zenodo</a></div>
-        </article>
-        <article class="project-card" data-category="app">
-          <div class="card-meta">
-            <span class="tag">App</span>
-            <span class="card-stack">Android · Health Connect</span>
+          <div class="dossier-body">
+            <p>Statistical analysis tool for repeated measurements. Compares summary variability metrics via simulation on your dataset, estimates statistical power and false-alarm rates, and saves run settings for reproducibility.</p>
+            <p class="dossier-context">I first test how a variability metric behaves in the target scenario before trusting it in an analysis.</p>
           </div>
-          <h2><a href="https://github.com/d1d2dopamine/vespian" rel="noopener">vespian</a></h2>
-          <p class="project-desc">An on-device sleep model for Android. Reads Health Connect data locally to estimate when sleep is likely, displaying both a time window and forecast confidence.</p>
-          <p class="project-context">Estimates when sleep is realistic today rather than enforcing one rigid bedtime.</p>
-          <div class="card-links"><a href="https://github.com/d1d2dopamine/vespian" rel="noopener">GitHub</a></div>
-        </article>
-        <article class="project-card" data-category="tool">
-          <div class="card-meta">
-            <span class="tag">Tool</span>
-            <span class="card-stack">Kotlin · Compose</span>
+          <div class="dossier-links"><a href="https://github.com/d1d2dopamine/MVS-analyzer" rel="noopener">GitHub ↗</a></div>
+        </li>
+        <li class="dossier-row" data-category="research">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:var(--cube-violet)" aria-hidden="true"></span>
+            <span>02</span>
           </div>
-          <h2><a href="https://github.com/d1d2dopamine/trial3lib" rel="noopener">trial3lib</a></h2>
-          <p class="project-desc">A Compose UI design system for Android without Material defaults: no elevation, ripple, or arbitrary surface styling. Geometry, colors, and contrast live in test-verified shared tokens.</p>
-          <p class="project-context">Enforces visual rules at the system level instead of overriding Material on every screen.</p>
-          <div class="card-links"><a href="https://github.com/d1d2dopamine/trial3lib" rel="noopener">GitHub</a></div>
-        </article>
-        <article class="project-card" data-category="tool">
-          <div class="card-meta">
-            <span class="tag">Tool</span>
-            <span class="card-stack">Python · Zero deps</span>
+          <div class="dossier-main">
+            <h2><a href="https://github.com/d1d2dopamine/allostatic-sprint-hypothesis" rel="noopener">Allostatic Sprint Hypothesis</a></h2>
+            <div class="dossier-meta">
+              <span class="tag">Research</span>
+              <span>Open Datasets · Zenodo</span>
+            </div>
           </div>
-          <h2><a href="https://github.com/d1d2dopamine/Gitctap" rel="noopener">Gitctap</a></h2>
-          <p class="project-desc">Zero-dependency Python CLI for pushing one local Git repository to multiple forges while checking each remote through ordinary Git.</p>
-          <p class="project-context">Removes manual multi-remote pushes and repeated shell aliases across repositories.</p>
-          <div class="card-links"><a href="https://github.com/d1d2dopamine/Gitctap" rel="noopener">GitHub</a></div>
-        </article>
-      </div>
+          <div class="dossier-body">
+            <p>Empirical testing of the Allostatic Sprint hypothesis across open attention-task datasets. Preserves positive results, null results, and cases where method limitations prevent a conclusion.</p>
+            <p class="dossier-context">Null results stay in the repository so the analysis is never shaped to fit the hypothesis.</p>
+          </div>
+          <div class="dossier-links"><a href="https://github.com/d1d2dopamine/allostatic-sprint-hypothesis" rel="noopener">GitHub ↗</a><a href="https://zenodo.org/records/21304761" rel="noopener">Zenodo ↗</a></div>
+        </li>
+        <li class="dossier-row" data-category="app">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:var(--cube-lime)" aria-hidden="true"></span>
+            <span>03</span>
+          </div>
+          <div class="dossier-main">
+            <h2><a href="https://github.com/d1d2dopamine/vespian" rel="noopener">vespian</a></h2>
+            <div class="dossier-meta">
+              <span class="tag">App</span>
+              <span>Android · Health Connect</span>
+            </div>
+          </div>
+          <div class="dossier-body">
+            <p>An on-device sleep model for Android. Reads Health Connect data locally to estimate when sleep is likely, displaying both a time window and forecast confidence.</p>
+            <p class="dossier-context">Estimates when sleep is realistic today rather than enforcing one rigid bedtime.</p>
+          </div>
+          <div class="dossier-links"><a href="https://github.com/d1d2dopamine/vespian" rel="noopener">GitHub ↗</a></div>
+        </li>
+        <li class="dossier-row" data-category="tool">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:var(--cube-amber)" aria-hidden="true"></span>
+            <span>04</span>
+          </div>
+          <div class="dossier-main">
+            <h2><a href="https://github.com/d1d2dopamine/trial3lib" rel="noopener">trial3lib</a></h2>
+            <div class="dossier-meta">
+              <span class="tag">Tool</span>
+              <span>Kotlin · Compose</span>
+            </div>
+          </div>
+          <div class="dossier-body">
+            <p>A Compose UI design system for Android without Material defaults: no elevation, ripple, or arbitrary surface styling. Geometry, colors, and contrast live in test-verified shared tokens.</p>
+            <p class="dossier-context">Enforces visual rules at the system level instead of overriding Material on every screen.</p>
+          </div>
+          <div class="dossier-links"><a href="https://github.com/d1d2dopamine/trial3lib" rel="noopener">GitHub ↗</a></div>
+        </li>
+        <li class="dossier-row" data-category="tool">
+          <div class="dossier-id">
+            <span class="cube-mark" style="--mark-color:var(--cube-magenta)" aria-hidden="true"></span>
+            <span>05</span>
+          </div>
+          <div class="dossier-main">
+            <h2><a href="https://github.com/d1d2dopamine/Gitctap" rel="noopener">Gitctap</a></h2>
+            <div class="dossier-meta">
+              <span class="tag">Tool</span>
+              <span>Python · Zero deps</span>
+            </div>
+          </div>
+          <div class="dossier-body">
+            <p>Zero-dependency Python CLI for pushing one local Git repository to multiple forges while checking each remote through ordinary Git.</p>
+            <p class="dossier-context">Removes manual multi-remote pushes and repeated shell aliases across repositories.</p>
+          </div>
+          <div class="dossier-links"><a href="https://github.com/d1d2dopamine/Gitctap" rel="noopener">GitHub ↗</a></div>
+        </li>
+      </ol>
       </div>
     </section>
   </main>
-  <script src="site.js?v=v3" defer></script>
+  <script src="site.js?v=v4" defer></script>
 </body>
 </html>

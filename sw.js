@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'd1d2dopamine-site-v3';
+const CACHE = 'd1d2dopamine-site-v4';
 const PREFIX = 'd1d2dopamine-site-';
 const SHELL = [
   './',
@@ -10,8 +10,9 @@ const SHELL = [
   'projects-ru.html',
   'about.html',
   'about-ru.html',
-  'styles.css?v=v3',
-  'site.js?v=v3',
+  'styles.css?v=v4',
+  'site.js?v=v4',
+  'assets/skyline-lines.png?v=v4',
 ];
 
 self.addEventListener('install', event => {
