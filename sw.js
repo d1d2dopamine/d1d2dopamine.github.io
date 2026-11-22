@@ -1,44 +1,70 @@
 'use strict';
-const CACHE = 'd1d2dopamine-site-round15-v1';
+
+const CACHE = 'd1d2dopamine-site-v2';
 const PREFIX = 'd1d2dopamine-site-';
-const FILES = [
-  './', 'index.html', 'ru.html', 'about.html', 'about-ru.html', 'projects.html', 'projects-ru.html',
-  '404.html', 'favicon.ico?v=round15', 'styles.css?v=round15', 'site.js?v=round15', 'pixel-fx.js?v=round15', 'site.webmanifest?v=round15',
-  'assets/og-image.png', 'assets/background-night.jpg?v=round15', 'assets/favicon.png?v=round15', 'assets/apple-touch-icon.png?v=round15',
-  'assets/icon-192.png?v=round15', 'assets/icon-512.png?v=round15', 'assets/icon-maskable-512.png?v=round15',
-  'assets/fonts/shantell-sans-variable.woff2',
+const SHELL = [
+  './',
+  'index.html',
+  'ru.html',
+  'projects.html',
+  'projects-ru.html',
+  'about.html',
+  'about-ru.html',
+  'styles.css?v=v2',
+  'site.js?v=v2',
 ];
-const allowed = new Set(FILES.map(file => new URL(file, self.registration.scope).href));
+
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES.map(file => new Request(new URL(file, self.registration.scope), {cache: 'reload'})))));
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache => Promise.allSettled(
+        SHELL.map(path => cache.add(new Request(new URL(path, self.registration.scope), { cache: 'reload' })))
+      ))
+      .then(() => self.skipWaiting())
+  );
 });
+
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith(PREFIX) && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(key => key.startsWith(PREFIX) && key !== CACHE).map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
 });
+
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET' || !allowed.has(event.request.url)) return;
-  if (event.request.mode === 'navigate') {
-    // Fresh documents online; exact page from the cache when offline.
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (req.mode === 'navigate') {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
       try {
-        const response = await fetch(event.request);
-        if (response.ok) await cache.put(event.request, response.clone());
-        return response;
-      } catch (error) {
-        const cached = await cache.match(event.request);
+        const fresh = await fetch(new Request(req, { cache: 'no-cache' }));
+        if (fresh.ok) event.waitUntil(cache.put(req, fresh.clone()));
+        return fresh;
+      } catch (err) {
+        const cached = await cache.match(req);
         if (cached) return cached;
-        throw error;
+        throw err;
       }
     })());
-  } else {
-    event.respondWith((async () => {
-      const cache = await caches.open(CACHE);
-      const cached = await cache.match(event.request);
-      if (cached) return cached;
-      const response = await fetch(event.request);
-      if (response.ok) await cache.put(event.request, response.clone());
-      return response;
-    })());
+    return;
   }
+
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const cached = await cache.match(req);
+    const update = fetch(new Request(req, { cache: 'no-cache' }))
+      .then(fresh => {
+        if (fresh.ok) {
+          event.waitUntil(cache.put(req, fresh.clone()));
+        }
+        return fresh;
+      })
+      .catch(() => cached);
+    return cached || update;
+  })());
 });
