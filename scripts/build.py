@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v13"
+ASSET_V = "v14"
 CUBE_COLORS = [
     "var(--cube-cyan)",
     "var(--cube-violet)",
@@ -506,11 +506,6 @@ def build_home(lang: str) -> str:
             <h1>d1d2dopamine</h1>
             <p class="hero-lead">{escape(h['lead'])}</p>
             <p class="hero-note">{escape(h['note'])}</p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="{c['flagship']['release_url']}" rel="noopener">{escape(h['cta_primary'])}</a>
-              <a class="btn" href="{ROUTES[lang]['projects']}">{escape(h['cta_secondary'])}</a>
-              <a class="btn btn-ghost" href="{ROUTES[lang]['about']}">{escape(h['cta_about'])}</a>
-            </div>
           </div>
         </div>
       </div>
