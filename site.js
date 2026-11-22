@@ -1,33 +1,7 @@
 (() => {
   'use strict';
 
-  const root = document.documentElement;
-  const ATMO_KEY = 'd1d2-atmosphere';
-
-  // 1. Atmosphere switch (Sky Clouds <-> Night)
-  const atmoBtn = document.querySelector('[data-atmo-toggle]');
-  const syncAtmoBtn = () => {
-    if (!atmoBtn) return;
-    const isNight = root.dataset.atmosphere === 'night';
-    atmoBtn.setAttribute('aria-pressed', String(isNight));
-    const label = atmoBtn.querySelector('[data-atmo-label]');
-    if (label) {
-      label.textContent = isNight ? atmoBtn.dataset.labelNight : atmoBtn.dataset.labelSky;
-    }
-  };
-  syncAtmoBtn();
-
-  if (atmoBtn) {
-    atmoBtn.addEventListener('click', () => {
-      const next = root.dataset.atmosphere === 'night' ? 'sky' : 'night';
-      root.dataset.atmosphere = next;
-      try { localStorage.setItem(ATMO_KEY, next); } catch {}
-      syncAtmoBtn();
-      window.dispatchEvent(new CustomEvent('d1d2:atmosphere', { detail: next }));
-    });
-  }
-
-  // 2. Project category filter (Projects page)
+  // 1. Project category filter (Projects page)
   const filterBar = document.querySelector('[data-filter-bar]');
   if (filterBar) {
     filterBar.hidden = false;
@@ -112,9 +86,8 @@
 
     const draw = () => {
       ctx.clearRect(0, 0, cw, ch);
-      const isNight = root.dataset.atmosphere === 'night';
-      const baseFill = isNight ? 0.25 : 0.30;
-      const baseStroke = isNight ? 0.44 : 0.52;
+      const baseFill = 0.28;
+      const baseStroke = 0.48;
       const compact = cw < 720;
 
       for (const c of cubes) {
@@ -210,7 +183,6 @@
     });
 
     window.addEventListener('resize', layout, { passive: true });
-    window.addEventListener('d1d2:atmosphere', draw);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; }
       else start();

@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://d1d2dopamine.is-a.dev"
-ASSET_V = "v5"
+ASSET_V = "v6"
 CUBE_COLORS = [
     "var(--cube-cyan)",
     "var(--cube-violet)",
@@ -393,7 +393,6 @@ def render_head(lang: str, page: str) -> str:
   <link rel="preload" href="assets/fonts/geologica-regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/geologica-semibold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css?v={ASSET_V}">
-  <script>(function(){{try{{if(localStorage.getItem('d1d2-atmosphere')==='night')document.documentElement.dataset.atmosphere='night';}}catch(e){{}}}})();</script>
 </head>"""
 
 
@@ -406,9 +405,6 @@ def render_header(lang: str, page: str) -> str:
         current = ' aria-current="page"' if key == page else ""
         nav_links.append(f'<a href="{href}"{current}>{escape(c["nav"][key])}</a>')
     other_href = ROUTES[other][page]
-    atmo_sky = "Небо" if lang == "ru" else "Sky"
-    atmo_night = "Ночь" if lang == "ru" else "Night"
-    atmo_aria = "Переключить атмосферу: Небо или Ночь" if lang == "ru" else "Switch atmosphere between Sky and Night"
     return f"""  <a class="skip-link" href="#content">{escape(c['skip'])}</a>
   <header class="site-header">
     <div class="container header-inner">
@@ -421,10 +417,6 @@ def render_header(lang: str, page: str) -> str:
         </nav>
       </div>
       <div class="header-right">
-        <button type="button" class="atmo-toggle" data-atmo-toggle data-label-sky="{atmo_sky}" data-label-night="{atmo_night}" aria-pressed="false" aria-label="{atmo_aria}">
-          <span class="atmo-swatch" aria-hidden="true"></span>
-          <span data-atmo-label>{atmo_sky}</span>
-        </button>
         <a class="icon-link" href="https://github.com/d1d2dopamine" rel="me noopener" aria-label="GitHub" title="GitHub">{GITHUB_SVG}</a>
         <a class="icon-link" href="https://x.com/d1d2dopamine" rel="me noopener" aria-label="X" title="X">{X_SVG}</a>
         <a class="icon-link" href="mailto:d1d2dopamine@gmail.com" aria-label="{escape(c['email_label'])}" title="{escape(c['email_label'])}">{MAIL_SVG}</a>

@@ -67,23 +67,7 @@
   --container: 1080px;
 }
 
-/* Night atmosphere (user's original night-city photo, loaded only when active) */
-html[data-atmosphere="night"] {
-  --bg: #061124;
-  --bg-deep: #040C1A;
-  --bg-header: rgba(6, 17, 36, 0.95);
-  --surface: rgba(8, 20, 40, 0.76);
-  --surface-elevated: rgba(14, 30, 56, 0.86);
-  --surface-tint: rgba(176, 206, 240, 0.06);
-  --grid-line: rgba(176, 206, 240, 0.03);
-  --border: rgba(176, 206, 240, 0.15);
-  --border-strong: rgba(176, 206, 240, 0.30);
-
-  --text: #DAE6F6;
-  --text-soft: #B2C6DE;
-  --muted: #839CB8;
-}
-
+/* Night atmosphere removed — single signature Blueberry + Blue Mosaic Tiles identity */
 *,
 *::before,
 *::after {
@@ -92,7 +76,7 @@ html[data-atmosphere="night"] {
 
 html {
   min-height: 100%;
-  background: var(--bg);
+  background: var(--bg-deep);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -105,26 +89,16 @@ body {
   font-size: 16px;
   line-height: 1.65;
   color: var(--text);
-  background-color: var(--bg);
+  background-color: var(--bg-deep);
   background-image:
-    linear-gradient(180deg, rgba(2, 24, 66, 0.34) 0%, rgba(2, 20, 56, 0.42) 55%, rgba(2, 16, 46, 0.52) 100%),
-    url("assets/clouds-zenith.webp");
+    linear-gradient(180deg, rgba(4, 16, 40, 0.34) 0%, rgba(3, 13, 34, 0.44) 55%, rgba(2, 10, 28, 0.54) 100%),
+    url("assets/bg-blueberries.webp");
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-html[data-atmosphere="night"] body {
-  background-image:
-    linear-gradient(180deg, rgba(6, 17, 36, 0.28) 0%, rgba(5, 14, 30, 0.40) 55%, rgba(4, 10, 22, 0.54) 100%),
-    url("assets/background-night.jpg");
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
 }
 
 img {
@@ -175,13 +149,19 @@ a:hover {
   margin-inline: auto;
 }
 
-/* Header */
+/* Header — horizontal blue glass mosaic tiles */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--bg-header);
-  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-deep);
+  background-image:
+    linear-gradient(180deg, rgba(2, 20, 56, 0.56) 0%, rgba(2, 16, 48, 0.66) 100%),
+    url("assets/header-tiles.webp");
+  background-size: cover, auto 160px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat-x;
+  border-bottom: 1px solid var(--border-strong);
 }
 
 .header-inner {
@@ -224,7 +204,7 @@ a:hover {
 .primary-nav a {
   padding: 7px 12px;
   border-radius: var(--radius-sm);
-  color: var(--muted);
+  color: var(--text-soft);
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
@@ -233,12 +213,12 @@ a:hover {
 
 .primary-nav a:hover {
   color: var(--text);
-  background: var(--surface-tint);
+  background: rgba(2, 20, 56, 0.55);
 }
 
 .primary-nav a[aria-current="page"] {
   color: var(--text);
-  background: var(--accent-soft);
+  background: rgba(2, 24, 68, 0.72);
   box-shadow: inset 0 0 0 1px var(--accent-border);
 }
 
@@ -249,44 +229,6 @@ a:hover {
   flex-shrink: 0;
 }
 
-.atmo-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--surface-tint);
-  color: var(--text-soft);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;
-}
-
-.atmo-toggle:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-  background: var(--accent-soft);
-}
-
-.atmo-swatch {
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-  background: var(--cube-cyan);
-  box-shadow: 3px 3px 0 -1px var(--cube-violet);
-  transition: background-color 160ms ease, box-shadow 160ms ease;
-}
-
-html[data-atmosphere="night"] .atmo-swatch {
-  background: var(--cube-amber);
-  box-shadow: 3px 3px 0 -1px var(--cube-magenta);
-}
-
 .icon-link {
   display: inline-flex;
   align-items: center;
@@ -294,13 +236,13 @@ html[data-atmosphere="night"] .atmo-swatch {
   width: 34px;
   height: 34px;
   border-radius: var(--radius-sm);
-  color: var(--muted);
+  color: var(--text-soft);
   text-decoration: none;
 }
 
 .icon-link:hover {
   color: var(--text);
-  background: var(--surface-tint);
+  background: rgba(2, 20, 56, 0.55);
 }
 
 .icon-link svg {
@@ -313,8 +255,9 @@ html[data-atmosphere="night"] .atmo-swatch {
   margin-left: 2px;
   padding: 6px 10px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  color: var(--text-soft);
+  border: 1px solid var(--border-strong);
+  background: rgba(2, 20, 56, 0.52);
+  color: var(--text);
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.05em;
