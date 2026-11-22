@@ -30,18 +30,20 @@
   font-display: swap;
 }
 
-/* Blueprint atmosphere (default — exact cobalt from github-banner.png, calm low-glare ink) */
+/* Opaque layered blueberry-indigo tonal palette (zero transparency bleed, distinct shade per surface) */
 :root {
   color-scheme: dark;
-  --bg: #002B73;
-  --bg-deep: #00215A;
-  --bg-header: rgba(0, 34, 92, 0.96);
-  --surface: rgba(2, 33, 88, 0.72);
-  --surface-elevated: rgba(7, 46, 114, 0.84);
-  --surface-tint: rgba(196, 220, 255, 0.06);
-  --grid-line: rgba(196, 220, 255, 0.055);
-  --border: rgba(196, 220, 255, 0.16);
-  --border-strong: rgba(196, 220, 255, 0.34);
+  --bg: #051636;
+  --bg-deep: #04112B;
+  --surface: #0A1F46;
+  --surface-flagship: #081B3E;
+  --surface-row: #0D244E;
+  --surface-elevated: #133166;
+  --surface-pill: #07193A;
+  --surface-tint: #102A5A;
+  --border: rgba(176, 206, 248, 0.14);
+  --border-strong: rgba(188, 216, 255, 0.28);
+  --shadow-panel: 0 14px 34px rgba(2, 8, 22, 0.42);
 
   --text: #DCE8FA;
   --text-soft: #B4CBEB;
@@ -286,10 +288,10 @@ main {
   position: relative;
   overflow: hidden;
   padding: clamp(28px, 5vw, 52px) clamp(24px, 4.5vw, 46px);
-  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--surface);
-  min-height: 370px;
+  background: linear-gradient(135deg, #082E73 0%, #04225A 60%, #031B48 100%);
+  box-shadow: var(--shadow-panel);
+  min-height: 360px;
   display: flex;
   align-items: center;
 }
@@ -304,19 +306,6 @@ main {
   user-select: none;
   opacity: 0.78;
   z-index: 1;
-}
-
-html[data-atmosphere="night"] .hero-skyline {
-  opacity: 0.34;
-}
-
-.hero-cubes-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
 }
 
 .hero-content {
@@ -430,36 +419,41 @@ html[data-atmosphere="night"] .hero-skyline {
 
 /* Sections */
 .section {
-  padding-top: 40px;
+  padding-top: 38px;
 }
 
 .section-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
 .section-title {
   margin: 0;
-  font-family: var(--mono);
-  font-size: 12px;
+  padding: 6px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-pill);
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  letter-spacing: 0.01em;
+  color: var(--text-soft);
+  box-shadow: 0 4px 14px rgba(2, 8, 22, 0.35);
 }
 
 .section-link {
-  font-size: 13.5px;
-  color: var(--text-soft);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-pill);
+  font-size: 13px;
+  color: var(--accent-bright);
   text-decoration: none;
+  box-shadow: 0 4px 14px rgba(2, 8, 22, 0.35);
 }
 
 .section-link:hover {
+  background: var(--surface-elevated);
   color: var(--text);
 }
 
@@ -469,10 +463,10 @@ html[data-atmosphere="night"] .hero-skyline {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: 28px;
   align-items: center;
-  padding: 26px 28px;
+  padding: 28px 30px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(145deg, #0D2553 0%, #071A3C 100%);
+  box-shadow: var(--shadow-panel);
 }
 
 .flagship-head {
@@ -566,12 +560,14 @@ html[data-atmosphere="night"] .hero-skyline {
   object-fit: cover;
 }
 
-/* Architectural Dossier Index (01..05) — replaces generic 2x2 rounded boxes */
+/* Opaque project slabs (no standard 1px divider lines — blueberry backdrop breathes cleanly between rows) */
 .dossier-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .dossier-row {
@@ -579,9 +575,11 @@ html[data-atmosphere="night"] .hero-skyline {
   grid-template-columns: 32px minmax(0, 1.05fr) minmax(0, 1.35fr) auto;
   gap: 18px 22px;
   align-items: start;
-  padding: 22px 14px;
-  border-bottom: 1px solid var(--border);
-  transition: background-color 150ms ease, border-color 150ms ease;
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  background: var(--surface-row);
+  box-shadow: 0 10px 26px rgba(2, 8, 22, 0.34);
+  transition: background-color 150ms ease, transform 150ms ease;
 }
 
 .dossier-row[hidden] {
@@ -590,8 +588,7 @@ html[data-atmosphere="night"] .hero-skyline {
 
 .dossier-row:hover,
 .dossier-row:focus-within {
-  background: var(--surface);
-  border-bottom-color: var(--border-strong);
+  background: var(--surface-elevated);
 }
 
 /* Two-square offset chromatic mark (folds into one aligned square on hover/focus) */
@@ -821,8 +818,8 @@ html[data-atmosphere="night"] .hero-skyline {
   margin-top: 28px;
   padding: 24px 28px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: #0A1E44;
+  box-shadow: var(--shadow-panel);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -845,21 +842,19 @@ html[data-atmosphere="night"] .hero-skyline {
 .about-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(240px, 0.75fr);
-  gap: 32px;
+  gap: 28px;
   align-items: start;
 }
 
 .essay {
-  padding: 28px 30px;
+  padding: 30px 32px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: #0A1E44;
+  box-shadow: var(--shadow-panel);
 }
 
 .essay-group + .essay-group {
-  margin-top: 26px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
+  margin-top: 28px;
 }
 
 .essay h2 {
@@ -882,8 +877,8 @@ html[data-atmosphere="night"] .hero-skyline {
 
 .aside-card {
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: #0E2652;
+  box-shadow: var(--shadow-panel);
   overflow: hidden;
 }
 
