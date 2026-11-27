@@ -370,7 +370,7 @@ def render_head(lang: str, page: str) -> str:
   <meta property="og:title" content="{escape(title)}">
   <meta property="og:description" content="{escape(desc)}">
   <meta property="og:url" content="{canon}">
-  <meta property="og:image" content="{ORIGIN}/assets/og-image.png">
+  <meta property="og:image" content="{ORIGIN}/assets/og-image.png?v=v19">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="{c['locale']}">
@@ -378,7 +378,7 @@ def render_head(lang: str, page: str) -> str:
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{escape(title)}">
   <meta name="twitter:description" content="{escape(desc)}">
-  <meta name="twitter:image" content="{ORIGIN}/assets/og-image.png">
+  <meta name="twitter:image" content="{ORIGIN}/assets/og-image.png?v=v19">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v={ASSET_V}">
   <link rel="icon" type="image/x-icon" href="favicon.ico?v={ASSET_V}">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v={ASSET_V}">
